@@ -1,4 +1,4 @@
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Linq;
@@ -17,27 +17,44 @@ namespace WebApplication02_Con_Autenticacion
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
             ApplicationDbContext db = new ApplicationDbContext();
+
             CrearRolesSistema(db);
             CrearUsuariosSistema(db);
             AsignarRolUsuario(db);
         }
-        /* Metodo para crear los roles del sistema */
+
+        /* 1️⃣ Crear roles con IDs fijos */
         private void CrearRolesSistema(ApplicationDbContext db)
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-            string[] roles = { "SuperAdmin", "Administrador", "Medico", "Paciente" };
+
+            var roles = new[]
+            {
+                new IdentityRole { Id = "1", Name = "Administrador" },
+                new IdentityRole { Id = "2", Name = "Medico" },
+                new IdentityRole { Id = "3", Name = "Paciente" },
+                new IdentityRole { Id = "4", Name = "SuperAdmin" }
+            };
 
             foreach (var rol in roles)
             {
-                if (!roleManager.RoleExists(rol))
+                if (!roleManager.RoleExists(rol.Name))
                 {
-                    roleManager.Create(new IdentityRole(rol));
-                    System.Diagnostics.Debug.WriteLine($"Rol '{rol}' creado correctamente.");
+                    db.Roles.Add(rol);
+                    System.Diagnostics.Debug.WriteLine($"Rol '{rol.Name}' creado con ID {rol.Id}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Rol '{rol.Name}' ya existe");
                 }
             }
+
+            db.SaveChanges();
         }
-        /* Metodo para crear los usuarios del sistema */
+
+        /* 2️⃣ Crear usuarios base */
         private void CrearUsuariosSistema(ApplicationDbContext db)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
@@ -54,7 +71,8 @@ namespace WebApplication02_Con_Autenticacion
             CrearUsuarioSistema(userManager, "SuperAdmin", "superadmin@veris.com");
             CrearUsuarioSistema(userManager, "ADM", "admin@veris.com");
         }
-        /* Metodo auxiliar para crear un usuario */
+
+        /* Auxiliar para crear usuario con pass por defecto */
         private void CrearUsuarioSistema(UserManager<ApplicationUser> userManager, string username, string email)
         {
             var usuario = userManager.FindByName(username);
@@ -69,16 +87,17 @@ namespace WebApplication02_Con_Autenticacion
                 var resultado = userManager.Create(nuevoUsuario, "123");
 
                 if (resultado.Succeeded)
-                    System.Diagnostics.Debug.WriteLine($" Usuario '{username}' creado correctamente (contrase�a: 123).");
+                    System.Diagnostics.Debug.WriteLine($"Usuario '{username}' creado (pass: 123)");
                 else
-                    System.Diagnostics.Debug.WriteLine($" Error al crear el usuario '{username}': {string.Join(", ", resultado.Errors)}");
+                    System.Diagnostics.Debug.WriteLine($"Error creando '{username}': {string.Join(", ", resultado.Errors)}");
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($" El usuario '{username}' ya existe.");
+                System.Diagnostics.Debug.WriteLine($"Usuario '{username}' ya existe");
             }
         }
-        /* Metodo para asignar roles a los usuarios del sistema */
+
+        /* 3️⃣ Asignar roles a los usuarios */
         private void AsignarRolUsuario(ApplicationDbContext db)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
@@ -95,7 +114,8 @@ namespace WebApplication02_Con_Autenticacion
                 AsignarRoles(userManager, administrador.Id, "Administrador");
             }
         }
-        /* Metodo auxiliar para asignar varios roles a un usuario */
+
+        /* Auxiliar asignar múltiples roles */
         private void AsignarRoles(UserManager<ApplicationUser> userManager, string userId, params string[] roles)
         {
             foreach (var rol in roles)
@@ -103,7 +123,7 @@ namespace WebApplication02_Con_Autenticacion
                 if (!userManager.IsInRole(userId, rol))
                 {
                     userManager.AddToRole(userId, rol);
-                    System.Diagnostics.Debug.WriteLine($" Rol '{rol}' asignado al usuario ID={userId}.");
+                    System.Diagnostics.Debug.WriteLine($"Rol '{rol}' asignado al usuario ID={userId}");
                 }
             }
         }
