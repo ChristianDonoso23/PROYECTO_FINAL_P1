@@ -10,6 +10,7 @@ using WebApplication02_Con_Autenticacion.Models;
 
 namespace WebApplication02_Con_Autenticacion.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, Administrador")]
     public class MedicamentoController : Controller
     {
         private ProyectoVeris_Context db = new ProyectoVeris_Context();
@@ -24,15 +25,13 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            medicamentos medicamentos = db.medicamentos.Find(id);
-            if (medicamentos == null)
-            {
+
+            medicamentos medicamento = db.medicamentos.Find(id);
+            if (medicamento == null)
                 return HttpNotFound();
-            }
-            return View(medicamentos);
+
+            return View(medicamento);
         }
 
         // GET: Medicamento/Create
@@ -42,66 +41,59 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // POST: Medicamento/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdMedicamento,Nombre,Tipo")] medicamentos medicamentos)
+        public ActionResult Create([Bind(Include = "IdMedicamento,Nombre,Tipo")] medicamentos medicamento)
         {
             if (ModelState.IsValid)
             {
-                db.medicamentos.Add(medicamentos);
+                db.medicamentos.Add(medicamento);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(medicamentos);
+            return View(medicamento);
         }
 
         // GET: Medicamento/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            medicamentos medicamentos = db.medicamentos.Find(id);
-            if (medicamentos == null)
-            {
+
+            medicamentos medicamento = db.medicamentos.Find(id);
+            if (medicamento == null)
                 return HttpNotFound();
-            }
-            return View(medicamentos);
+
+            return View(medicamento);
         }
 
         // POST: Medicamento/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdMedicamento,Nombre,Tipo")] medicamentos medicamentos)
+        public ActionResult Edit([Bind(Include = "IdMedicamento,Nombre,Tipo")] medicamentos medicamento)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(medicamentos).State = EntityState.Modified;
+                db.Entry(medicamento).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(medicamentos);
+
+            return View(medicamento);
         }
 
         // GET: Medicamento/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            medicamentos medicamentos = db.medicamentos.Find(id);
-            if (medicamentos == null)
-            {
+
+            medicamentos medicamento = db.medicamentos.Find(id);
+            if (medicamento == null)
                 return HttpNotFound();
-            }
-            return View(medicamentos);
+
+            return View(medicamento);
         }
 
         // POST: Medicamento/Delete/5
@@ -109,8 +101,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            medicamentos medicamentos = db.medicamentos.Find(id);
-            db.medicamentos.Remove(medicamentos);
+            medicamentos medicamento = db.medicamentos.Find(id);
+            db.medicamentos.Remove(medicamento);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -118,9 +110,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
+
             base.Dispose(disposing);
         }
     }

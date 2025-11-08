@@ -1,0 +1,30 @@
+﻿@model IEnumerable<WebApplication02_Con_Autenticacion.Models.ViewModels.UserRoleViewModel>
+
+@{
+    ViewBag.Title = "Gestión de Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Gestión de Roles de Usuarios</h2>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Email</th>
+        <th>Rol Actual</th>
+        <th>Acción</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Email</td>
+            <td>@item.Roles</td>
+            <td>@Html.ActionLink("Asignar Rol", "AsignarRol", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })</td>
+        </tr>
+    }
+</table>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success mt-2">@TempData["Mensaje"]</div>
+}

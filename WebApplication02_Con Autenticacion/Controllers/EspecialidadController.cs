@@ -10,6 +10,7 @@ using WebApplication02_Con_Autenticacion.Models;
 
 namespace WebApplication02_Con_Autenticacion.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, Administrador")]
     public class EspecialidadController : Controller
     {
         private ProyectoVeris_Context db = new ProyectoVeris_Context();
@@ -24,15 +25,13 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            especialidades especialidades = db.especialidades.Find(id);
-            if (especialidades == null)
-            {
+
+            especialidades especialidad = db.especialidades.Find(id);
+            if (especialidad == null)
                 return HttpNotFound();
-            }
-            return View(especialidades);
+
+            return View(especialidad);
         }
 
         // GET: Especialidad/Create
@@ -42,66 +41,58 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // POST: Especialidad/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdEspecialidad,Descripcion,Dias,Franja_HI,Franja_HF")] especialidades especialidades)
+        public ActionResult Create([Bind(Include = "IdEspecialidad,Descripcion,Dias,Franja_HI,Franja_HF")] especialidades especialidad)
         {
             if (ModelState.IsValid)
             {
-                db.especialidades.Add(especialidades);
+                db.especialidades.Add(especialidad);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(especialidades);
+            return View(especialidad);
         }
 
         // GET: Especialidad/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            especialidades especialidades = db.especialidades.Find(id);
-            if (especialidades == null)
-            {
+
+            especialidades especialidad = db.especialidades.Find(id);
+            if (especialidad == null)
                 return HttpNotFound();
-            }
-            return View(especialidades);
+
+            return View(especialidad);
         }
 
         // POST: Especialidad/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdEspecialidad,Descripcion,Dias,Franja_HI,Franja_HF")] especialidades especialidades)
+        public ActionResult Edit([Bind(Include = "IdEspecialidad,Descripcion,Dias,Franja_HI,Franja_HF")] especialidades especialidad)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(especialidades).State = EntityState.Modified;
+                db.Entry(especialidad).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(especialidades);
+            return View(especialidad);
         }
 
         // GET: Especialidad/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            especialidades especialidades = db.especialidades.Find(id);
-            if (especialidades == null)
-            {
+
+            especialidades especialidad = db.especialidades.Find(id);
+            if (especialidad == null)
                 return HttpNotFound();
-            }
-            return View(especialidades);
+
+            return View(especialidad);
         }
 
         // POST: Especialidad/Delete/5
@@ -109,8 +100,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            especialidades especialidades = db.especialidades.Find(id);
-            db.especialidades.Remove(especialidades);
+            especialidades especialidad = db.especialidades.Find(id);
+            db.especialidades.Remove(especialidad);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -118,9 +109,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
+
             base.Dispose(disposing);
         }
     }

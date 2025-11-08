@@ -15,6 +15,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         private ProyectoVeris_Context db = new ProyectoVeris_Context();
 
         // GET: Receta
+        [Authorize(Roles = "SuperAdmin, Administrador, Medico")]
         public ActionResult Index()
         {
             var recetas = db.recetas.Include(r => r.consultas).Include(r => r.medicamentos);
@@ -22,21 +23,21 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // GET: Receta/Details/5
+        [Authorize(Roles = "SuperAdmin, Administrador, Medico")]
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            recetas recetas = db.recetas.Find(id);
-            if (recetas == null)
-            {
+
+            recetas receta = db.recetas.Find(id);
+            if (receta == null)
                 return HttpNotFound();
-            }
-            return View(recetas);
+
+            return View(receta);
         }
 
         // GET: Receta/Create
+        [Authorize(Roles = "SuperAdmin, Medico")]
         public ActionResult Create()
         {
             ViewBag.IdConsulta = new SelectList(db.consultas, "IdConsulta", "Diagnostico");
@@ -45,81 +46,79 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // POST: Receta/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdReceta,IdConsulta,IdMedicamento,Cantidad")] recetas recetas)
+        [Authorize(Roles = "SuperAdmin, Medico")]
+        public ActionResult Create([Bind(Include = "IdReceta,IdConsulta,IdMedicamento,Cantidad")] recetas receta)
         {
             if (ModelState.IsValid)
             {
-                db.recetas.Add(recetas);
+                db.recetas.Add(receta);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdConsulta = new SelectList(db.consultas, "IdConsulta", "Diagnostico", recetas.IdConsulta);
-            ViewBag.IdMedicamento = new SelectList(db.medicamentos, "IdMedicamento", "Nombre", recetas.IdMedicamento);
-            return View(recetas);
+            ViewBag.IdConsulta = new SelectList(db.consultas, "IdConsulta", "Diagnostico", receta.IdConsulta);
+            ViewBag.IdMedicamento = new SelectList(db.medicamentos, "IdMedicamento", "Nombre", receta.IdMedicamento);
+            return View(receta);
         }
 
         // GET: Receta/Edit/5
+        [Authorize(Roles = "SuperAdmin, Medico")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            recetas recetas = db.recetas.Find(id);
-            if (recetas == null)
-            {
+
+            recetas receta = db.recetas.Find(id);
+            if (receta == null)
                 return HttpNotFound();
-            }
-            ViewBag.IdConsulta = new SelectList(db.consultas, "IdConsulta", "Diagnostico", recetas.IdConsulta);
-            ViewBag.IdMedicamento = new SelectList(db.medicamentos, "IdMedicamento", "Nombre", recetas.IdMedicamento);
-            return View(recetas);
+
+            ViewBag.IdConsulta = new SelectList(db.consultas, "IdConsulta", "Diagnostico", receta.IdConsulta);
+            ViewBag.IdMedicamento = new SelectList(db.medicamentos, "IdMedicamento", "Nombre", receta.IdMedicamento);
+            return View(receta);
         }
 
         // POST: Receta/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdReceta,IdConsulta,IdMedicamento,Cantidad")] recetas recetas)
+        [Authorize(Roles = "SuperAdmin, Medico")]
+        public ActionResult Edit([Bind(Include = "IdReceta,IdConsulta,IdMedicamento,Cantidad")] recetas receta)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(recetas).State = EntityState.Modified;
+                db.Entry(receta).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdConsulta = new SelectList(db.consultas, "IdConsulta", "Diagnostico", recetas.IdConsulta);
-            ViewBag.IdMedicamento = new SelectList(db.medicamentos, "IdMedicamento", "Nombre", recetas.IdMedicamento);
-            return View(recetas);
+
+            ViewBag.IdConsulta = new SelectList(db.consultas, "IdConsulta", "Diagnostico", receta.IdConsulta);
+            ViewBag.IdMedicamento = new SelectList(db.medicamentos, "IdMedicamento", "Nombre", receta.IdMedicamento);
+            return View(receta);
         }
 
         // GET: Receta/Delete/5
+        [Authorize(Roles = "SuperAdmin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            recetas recetas = db.recetas.Find(id);
-            if (recetas == null)
-            {
+
+            recetas receta = db.recetas.Find(id);
+            if (receta == null)
                 return HttpNotFound();
-            }
-            return View(recetas);
+
+            return View(receta);
         }
 
         // POST: Receta/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
-            recetas recetas = db.recetas.Find(id);
-            db.recetas.Remove(recetas);
+            recetas receta = db.recetas.Find(id);
+            db.recetas.Remove(receta);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -127,9 +126,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
+
             base.Dispose(disposing);
         }
     }

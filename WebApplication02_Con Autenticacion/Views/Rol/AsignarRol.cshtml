@@ -1,0 +1,22 @@
+﻿@model WebApplication02_Con_Autenticacion.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Asignar Rol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asignar Rol a Usuario</h2>
+<h4>@Model.Email</h4>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.Label("Seleccione un rol:")
+        @Html.DropDownList("rolSeleccionado", (SelectList)ViewBag.Roles, "Seleccione...", new { @class = "form-control" })
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Guardar</button>
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary ms-2" })
+}

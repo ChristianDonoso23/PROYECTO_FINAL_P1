@@ -15,6 +15,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         private ProyectoVeris_Context db = new ProyectoVeris_Context();
 
         // GET: Paciente
+        [Authorize(Roles = "SuperAdmin, Administrador, Paciente")]
         public ActionResult Index()
         {
             var pacientes = db.pacientes.Include(p => p.AspNetUsers);
@@ -22,6 +23,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // GET: Paciente/Details/5
+        [Authorize(Roles = "SuperAdmin, Administrador, Paciente")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +39,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // GET: Paciente/Create
+        [Authorize(Roles = "SuperAdmin, Administrador")]
         public ActionResult Create()
         {
             ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email");
@@ -48,6 +51,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, Administrador")]
         public ActionResult Create([Bind(Include = "IdPaciente,IdUsuario,Nombre,Cedula,Edad,Genero,Estatura,Peso,Foto")] pacientes pacientes)
         {
             if (ModelState.IsValid)
@@ -62,6 +66,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // GET: Paciente/Edit/5
+        [Authorize(Roles = "SuperAdmin, Administrador, Paciente")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,6 +87,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, Administrador, Paciente")]
         public ActionResult Edit([Bind(Include = "IdPaciente,IdUsuario,Nombre,Cedula,Edad,Genero,Estatura,Peso,Foto")] pacientes pacientes)
         {
             if (ModelState.IsValid)
@@ -95,6 +101,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // GET: Paciente/Delete/5
+        [Authorize(Roles = "SuperAdmin, Administrador")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,6 +119,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         // POST: Paciente/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, Administrador")]
         public ActionResult DeleteConfirmed(int id)
         {
             pacientes pacientes = db.pacientes.Find(id);

@@ -1,50 +1,78 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>@ViewBag.Title - Proyecto VERIS</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("TALLER MODIFICACION LOGIN Y REGISTER", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            @Html.ActionLink("VERIS - Gestión Médica", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                    aria-controls="menuPrincipal" aria-expanded="false" aria-label="Alternar navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="menuPrincipal">
                 <ul class="navbar-nav flex-grow-1">
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>
-                            @Html.ActionLink("Peliculas", "Pelicula", "Home", new { area = "" }, new { @class = "nav-link" })
-                        </li>
+                        // 🔹 SuperAdmin: acceso total
+                        if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li>@Html.ActionLink("Pacientes", "Index", "Paciente", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Médicos", "Index", "Medico", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Especialidades", "Index", "Especialidad", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Medicamentos", "Index", "Medicamento", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Consultas", "Index", "Consulta", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Recetas", "Index", "Receta", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Gestión de Roles", "Index", "Rol", null, new { @class = "nav-link" })</li>
+                        }
+
+                        // 🔹 Administrador: todo menos consultas y recetas
+                        else if (User.IsInRole("Administrador"))
+                        {
+                            <li>@Html.ActionLink("Pacientes", "Index", "Paciente", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Médicos", "Index", "Medico", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Especialidades", "Index", "Especialidad", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Medicamentos", "Index", "Medicamento", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Gestión de Roles", "Index", "Rol", null, new { @class = "nav-link" })</li>
+                        }
+
+                        // 🔹 Médico: solo consultas y recetas
+                        else if (User.IsInRole("Medico"))
+                        {
+                            <li>@Html.ActionLink("Consultas", "Index", "Consulta", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Recetas", "Index", "Receta", null, new { @class = "nav-link" })</li>
+                        }
+
+                        // 🔹 Paciente: solo su perfil
+                        else if (User.IsInRole("Paciente"))
+                        {
+                            <li>@Html.ActionLink("Mis Datos", "Index", "Paciente", null, new { @class = "nav-link" })</li>
+                        }
                     }
-                    else
-                    {
-                        <li>@Html.ActionLink("Inicio", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Acerca de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Contacto", "Contact2", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-
-                    }
-
-
                 </ul>
-                 @Html.Partial("_LoginPartial")
+
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </nav>
-    <div class="container body-content">
+
+
+    <div class="container body-content mt-4">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+        <footer class="text-center text-muted">
+            <p>&copy; @DateTime.Now.Year - Proyecto VERIS</p>
         </footer>
     </div>
 

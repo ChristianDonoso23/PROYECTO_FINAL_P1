@@ -10,6 +10,7 @@ using WebApplication02_Con_Autenticacion.Models;
 
 namespace WebApplication02_Con_Autenticacion.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, Administrador")]
     public class MedicoController : Controller
     {
         private ProyectoVeris_Context db = new ProyectoVeris_Context();
@@ -25,15 +26,13 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            medicos medicos = db.medicos.Find(id);
-            if (medicos == null)
-            {
+
+            medicos medico = db.medicos.Find(id);
+            if (medico == null)
                 return HttpNotFound();
-            }
-            return View(medicos);
+
+            return View(medico);
         }
 
         // GET: Medico/Create
@@ -45,72 +44,65 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // POST: Medico/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdMedico,Nombre,IdEspecialidad,IdUsuario,Foto")] medicos medicos)
+        public ActionResult Create([Bind(Include = "IdMedico,Nombre,IdEspecialidad,IdUsuario,Foto")] medicos medico)
         {
             if (ModelState.IsValid)
             {
-                db.medicos.Add(medicos);
+                db.medicos.Add(medico);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", medicos.IdUsuario);
-            ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medicos.IdEspecialidad);
-            return View(medicos);
+            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", medico.IdUsuario);
+            ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medico.IdEspecialidad);
+            return View(medico);
         }
 
         // GET: Medico/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            medicos medicos = db.medicos.Find(id);
-            if (medicos == null)
-            {
+
+            medicos medico = db.medicos.Find(id);
+            if (medico == null)
                 return HttpNotFound();
-            }
-            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", medicos.IdUsuario);
-            ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medicos.IdEspecialidad);
-            return View(medicos);
+
+            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", medico.IdUsuario);
+            ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medico.IdEspecialidad);
+            return View(medico);
         }
 
         // POST: Medico/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdMedico,Nombre,IdEspecialidad,IdUsuario,Foto")] medicos medicos)
+        public ActionResult Edit([Bind(Include = "IdMedico,Nombre,IdEspecialidad,IdUsuario,Foto")] medicos medico)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(medicos).State = EntityState.Modified;
+                db.Entry(medico).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", medicos.IdUsuario);
-            ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medicos.IdEspecialidad);
-            return View(medicos);
+
+            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", medico.IdUsuario);
+            ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medico.IdEspecialidad);
+            return View(medico);
         }
 
         // GET: Medico/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            medicos medicos = db.medicos.Find(id);
-            if (medicos == null)
-            {
+
+            medicos medico = db.medicos.Find(id);
+            if (medico == null)
                 return HttpNotFound();
-            }
-            return View(medicos);
+
+            return View(medico);
         }
 
         // POST: Medico/Delete/5
@@ -118,8 +110,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            medicos medicos = db.medicos.Find(id);
-            db.medicos.Remove(medicos);
+            medicos medico = db.medicos.Find(id);
+            db.medicos.Remove(medico);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -127,9 +119,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
+
             base.Dispose(disposing);
         }
     }

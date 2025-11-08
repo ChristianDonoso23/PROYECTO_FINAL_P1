@@ -15,6 +15,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         private ProyectoVeris_Context db = new ProyectoVeris_Context();
 
         // GET: Consulta
+        [Authorize(Roles = "SuperAdmin, Administrador, Medico")]
         public ActionResult Index()
         {
             var consultas = db.consultas.Include(c => c.pacientes).Include(c => c.medicos);
@@ -22,104 +23,102 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // GET: Consulta/Details/5
+        [Authorize(Roles = "SuperAdmin, Administrador, Medico")]
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            consultas consultas = db.consultas.Find(id);
-            if (consultas == null)
-            {
+
+            consultas consulta = db.consultas.Find(id);
+            if (consulta == null)
                 return HttpNotFound();
-            }
-            return View(consultas);
+
+            return View(consulta);
         }
 
         // GET: Consulta/Create
+        [Authorize(Roles = "SuperAdmin")]
         public ActionResult Create()
         {
-            ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "IdUsuario");
+            ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "Nombre");
             ViewBag.IdMedico = new SelectList(db.medicos, "IdMedico", "Nombre");
             return View();
         }
 
         // POST: Consulta/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdConsulta,IdMedico,IdPaciente,FechaConsulta,HI,HF,Diagnostico")] consultas consultas)
+        [Authorize(Roles = "SuperAdmin")]
+        public ActionResult Create([Bind(Include = "IdConsulta,IdMedico,IdPaciente,FechaConsulta,HI,HF,Diagnostico")] consultas consulta)
         {
             if (ModelState.IsValid)
             {
-                db.consultas.Add(consultas);
+                db.consultas.Add(consulta);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "IdUsuario", consultas.IdPaciente);
-            ViewBag.IdMedico = new SelectList(db.medicos, "IdMedico", "Nombre", consultas.IdMedico);
-            return View(consultas);
+            ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "Nombre", consulta.IdPaciente);
+            ViewBag.IdMedico = new SelectList(db.medicos, "IdMedico", "Nombre", consulta.IdMedico);
+            return View(consulta);
         }
 
         // GET: Consulta/Edit/5
+        [Authorize(Roles = "SuperAdmin, Medico")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            consultas consultas = db.consultas.Find(id);
-            if (consultas == null)
-            {
+
+            consultas consulta = db.consultas.Find(id);
+            if (consulta == null)
                 return HttpNotFound();
-            }
-            ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "IdUsuario", consultas.IdPaciente);
-            ViewBag.IdMedico = new SelectList(db.medicos, "IdMedico", "Nombre", consultas.IdMedico);
-            return View(consultas);
+
+            ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "Nombre", consulta.IdPaciente);
+            ViewBag.IdMedico = new SelectList(db.medicos, "IdMedico", "Nombre", consulta.IdMedico);
+            return View(consulta);
         }
 
         // POST: Consulta/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdConsulta,IdMedico,IdPaciente,FechaConsulta,HI,HF,Diagnostico")] consultas consultas)
+        [Authorize(Roles = "SuperAdmin, Medico")]
+        public ActionResult Edit([Bind(Include = "IdConsulta,IdMedico,IdPaciente,FechaConsulta,HI,HF,Diagnostico")] consultas consulta)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(consultas).State = EntityState.Modified;
+                db.Entry(consulta).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "IdUsuario", consultas.IdPaciente);
-            ViewBag.IdMedico = new SelectList(db.medicos, "IdMedico", "Nombre", consultas.IdMedico);
-            return View(consultas);
+
+            ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "Nombre", consulta.IdPaciente);
+            ViewBag.IdMedico = new SelectList(db.medicos, "IdMedico", "Nombre", consulta.IdMedico);
+            return View(consulta);
         }
 
         // GET: Consulta/Delete/5
+        [Authorize(Roles = "SuperAdmin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            consultas consultas = db.consultas.Find(id);
-            if (consultas == null)
-            {
+
+            consultas consulta = db.consultas.Find(id);
+            if (consulta == null)
                 return HttpNotFound();
-            }
-            return View(consultas);
+
+            return View(consulta);
         }
 
         // POST: Consulta/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
-            consultas consultas = db.consultas.Find(id);
-            db.consultas.Remove(consultas);
+            consultas consulta = db.consultas.Find(id);
+            db.consultas.Remove(consulta);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -127,9 +126,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
+
             base.Dispose(disposing);
         }
     }
