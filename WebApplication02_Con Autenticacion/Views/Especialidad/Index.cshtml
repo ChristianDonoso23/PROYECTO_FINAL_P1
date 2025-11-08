@@ -1,0 +1,52 @@
+﻿@model IEnumerable<WebApplication02_Con_Autenticacion.Models.especialidades>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dias)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Franja_HI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Franja_HF)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dias)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Franja_HI)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Franja_HF)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdEspecialidad }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdEspecialidad }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdEspecialidad })
+        </td>
+    </tr>
+}
+
+</table>

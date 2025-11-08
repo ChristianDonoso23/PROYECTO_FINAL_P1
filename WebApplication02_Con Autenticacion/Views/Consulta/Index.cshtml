@@ -1,0 +1,64 @@
+﻿@model IEnumerable<WebApplication02_Con_Autenticacion.Models.consultas>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaConsulta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HF)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Diagnostico)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pacientes.IdUsuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.medicos.Nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaConsulta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HI)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HF)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Diagnostico)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pacientes.IdUsuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.medicos.Nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdConsulta }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdConsulta }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdConsulta })
+        </td>
+    </tr>
+}
+
+</table>

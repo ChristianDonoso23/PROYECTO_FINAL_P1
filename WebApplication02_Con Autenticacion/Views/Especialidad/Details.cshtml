@@ -1,0 +1,51 @@
+﻿@model WebApplication02_Con_Autenticacion.Models.especialidades
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>especialidades</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dias)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dias)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Franja_HI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Franja_HI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Franja_HF)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Franja_HF)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdEspecialidad }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

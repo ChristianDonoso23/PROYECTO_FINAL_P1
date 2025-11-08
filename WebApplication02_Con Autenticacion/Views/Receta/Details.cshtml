@@ -1,0 +1,43 @@
+﻿@model WebApplication02_Con_Autenticacion.Models.recetas
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>recetas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Cantidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cantidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.consultas.Diagnostico)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.consultas.Diagnostico)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.medicamentos.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.medicamentos.Nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdReceta }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
