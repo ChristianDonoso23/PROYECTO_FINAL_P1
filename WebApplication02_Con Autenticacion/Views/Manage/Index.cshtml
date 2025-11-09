@@ -1,88 +1,52 @@
 ﻿@model WebApplication02_Con_Autenticacion.Models.IndexViewModel
 @{
-    ViewBag.Title = "Administrar";
+    ViewBag.Title = "Administrar Cuenta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
+<main class="container my-5 veris-crear-container">
+    <h2 class="veris-crear-title">Administrar Cuenta</h2>
+    <p class="veris-crear-subtitle">Configura la seguridad y los accesos de tu cuenta</p>
+    <hr class="veris-crear-divider" />
 
-    <p class="text-success">@ViewBag.StatusMessage</p>
-    <div>
-        <h4>Cambiar la configuración de la cuenta</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>Contraseña:</dt>
-            <dd>
-                [
+    @if (!string.IsNullOrEmpty(ViewBag.StatusMessage))
+    {
+        <div class="alert alert-success text-center mb-4 shadow-sm">
+            @ViewBag.StatusMessage
+        </div>
+    }
+
+    <div class="veris-config-card p-4">
+        <h4 class="mb-3 text-primary">Opciones de Seguridad</h4>
+        <dl class="row">
+            <dt class="col-sm-4 fw-semibold">Contraseña:</dt>
+            <dd class="col-sm-8">
                 @if (Model.HasPassword)
                 {
-                    @Html.ActionLink("Cambiar la contraseña", "ChangePassword")
+                    @Html.ActionLink("Cambiar Contraseña", "ChangePassword", null, new { @class = "btn btn-outline-primary btn-sm" })
                 }
                 else
                 {
-                    @Html.ActionLink("Crear", "SetPassword")
+                    @Html.ActionLink("Crear Contraseña", "SetPassword", null, new { @class = "btn btn-primary btn-sm" })
                 }
-                ]
             </dd>
-            <dt>Inicios de sesión externos:</dt>
-            <dd>
-                @Model.Logins.Count [
-                @Html.ActionLink("Manage", "ManageLogins") ]
+
+            <dt class="col-sm-4 fw-semibold">Inicios de sesión externos:</dt>
+            <dd class="col-sm-8">
+                <span class="badge bg-secondary">@Model.Logins.Count</span>
+                @Html.ActionLink("Gestionar", "ManageLogins", null, new { @class = "btn btn-outline-secondary btn-sm ms-2" })
             </dd>
-            @*
-                Los números de teléfono se pueden usar como una segunda fase de comprobación en un sistema de autenticación en dos fases.
-                
-                Consulte <a href="https://go.microsoft.com/fwlink/?LinkId=403804">este artículo</a>
-                    para obtener detalles sobre cómo configurar esta aplicación ASP.NET para que sea compatible con la autenticación en dos fases mediante SMS.
-                
-                Quite la marca de comentario del bloque siguiente después de configurar la autenticación en dos fases
-            *@
-            @*  
-                <dt>Número de teléfono:</dt>
-                <dd>
-                    @(Model.PhoneNumber ?? "None")
-                    @if (Model.PhoneNumber != null)
-                    {
-                        <br />
-                        <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                        using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <text>[<input type="submit" value="Quitar" class="btn-link" />]</text>
-                        }
-                    }
-                    else
-                    {
-                        <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                    }
-                </dd>
-            *@
-            <dt>Autenticación de dos factores:</dt>
-            <dd>
-                <p>
-                    No hay ningún proveedor de autenticación en dos fases configurado. Consulte <a href="https://go.microsoft.com/fwlink/?LinkId=403804">este artículo</a>
-                    para obtener detalles sobre cómo configurar esta aplicación ASP.NET para que sea compatible con la autenticación en dos fases.
+
+            <dt class="col-sm-4 fw-semibold">Autenticación en dos pasos:</dt>
+            <dd class="col-sm-8">
+                <p class="text-muted mb-1">
+                    No hay ningún proveedor de autenticación en dos fases configurado.
                 </p>
-                @*@if (Model.TwoFactor)
-                    {
-                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <text>Habilitado
-                            <input type="submit" value="Deshabilitar" class="btn btn-link" />
-                            </text>
-                        }
-                    }
-                    else
-                    {
-                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <text>Deshabilitada
-                            <input type="submit" value="Habilitar" class="btn btn-link" />
-                            </text>
-                        }
-                    }*@
+                <a href="https://go.microsoft.com/fwlink/?LinkId=403804"
+                   class="text-decoration-none text-primary"
+                   target="_blank">
+                    Ver cómo configurar autenticación de dos factores
+                </a>
             </dd>
         </dl>
     </div>
