@@ -60,5 +60,33 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             TempData["Mensaje"] = $"Rol '{rolSeleccionado}' asignado a {user.Email}";
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult QuitarRol(string id)
+        {
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var user = db.Users.Find(id);
+
+            if (user == null)
+                return HttpNotFound();
+
+            // Obtener todos los roles del usuario
+            var rolesActuales = userManager.GetRoles(user.Id).ToArray();
+
+            // Si tiene alguno, se eliminan
+            if (rolesActuales.Any())
+            {
+                userManager.RemoveFromRoles(user.Id, rolesActuales);
+                TempData["Mensaje"] = $"Se eliminaron todos los roles del usuario {user.Email}.";
+            }
+            else
+            {
+                TempData["Mensaje"] = $"El usuario {user.Email} no tenía roles asignados.";
+            }
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

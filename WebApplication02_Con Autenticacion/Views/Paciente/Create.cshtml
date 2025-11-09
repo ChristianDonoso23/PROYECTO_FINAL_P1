@@ -16,23 +16,33 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+        <!-- 🔹 Campo de selección de usuario existente o creación automática -->
         <div class="form-group">
-            @Html.LabelFor(model => model.IdUsuario, "Usuario", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IdUsuario, "Usuario asociado", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("IdUsuario", null, new { @class = "form-control" })
+                @Html.DropDownList(
+                    "IdUsuario",
+                    (SelectList)ViewBag.IdUsuario,
+                    "-- Crear nuevo usuario automáticamente --",
+                    new { @class = "form-control" }
+                )
+                <small class="form-text text-muted">
+                    Si no selecciona un usuario, se generará uno nuevo automáticamente con correo <b>hotmail.com</b> y contraseña <b>123</b>.
+                </small>
                 @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "text-danger" })
-                <small class="form-text text-muted">Seleccione el usuario asignado.</small>
             </div>
         </div>
 
+        <!-- 🔹 Nombre -->
         <div class="form-group">
             @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Ingrese el nombre completo" })
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Ejemplo: Christian Donoso" })
                 @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
             </div>
         </div>
 
+        <!-- 🔹 Cédula -->
         <div class="form-group">
             @Html.LabelFor(model => model.Cedula, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -41,6 +51,7 @@
             </div>
         </div>
 
+        <!-- 🔹 Edad -->
         <div class="form-group">
             @Html.LabelFor(model => model.Edad, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -49,6 +60,7 @@
             </div>
         </div>
 
+        <!-- 🔹 Género -->
         <div class="form-group">
             @Html.LabelFor(model => model.Genero, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -62,6 +74,7 @@
             </div>
         </div>
 
+        <!-- 🔹 Estatura -->
         <div class="form-group">
             @Html.LabelFor(model => model.Estatura, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -70,6 +83,7 @@
             </div>
         </div>
 
+        <!-- 🔹 Peso -->
         <div class="form-group">
             @Html.LabelFor(model => model.Peso, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -78,14 +92,21 @@
             </div>
         </div>
 
+        <!-- 🔹 Foto -->
         <div class="form-group">
             @Html.LabelFor(model => model.Foto, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Foto, new { @class = "form-control", placeholder = "URL o ruta de imagen" })
+                @Html.DropDownListFor(
+                    model => model.Foto,
+                    (SelectList)ViewBag.Fotos,
+                    "-- Seleccione una imagen --",
+                    new { @class = "form-control" }
+                )
                 @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger" })
             </div>
         </div>
 
+        <!-- 🔹 Botones -->
         <div class="form-group mt-3">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Registrar" class="btn btn-success" />

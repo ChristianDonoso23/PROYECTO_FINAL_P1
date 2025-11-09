@@ -259,6 +259,26 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Imagenes\usu01.jpg" />
+    <Content Include="Imagenes\usu02.jpg" />
+    <Content Include="Imagenes\usu03.jpg" />
+    <Content Include="Imagenes\usu04..jpg" />
+    <Content Include="Imagenes\usu05.jpg" />
+    <Content Include="Imagenes\usu06.jpg" />
+    <Content Include="Imagenes\usu07.jpg" />
+    <Content Include="Imagenes\usu08.jpg" />
+    <Content Include="Imagenes\usu09.jpg" />
+    <Content Include="Imagenes\usu10.jpeg" />
+    <Content Include="Imagenes\usu11.jpg" />
+    <Content Include="Imagenes\usu12.jpg" />
+    <Content Include="Imagenes\usu13.jpg" />
+    <Content Include="Imagenes\usu14.jpg" />
+    <Content Include="Imagenes\usu15.jpg" />
+    <Content Include="Imagenes\usu16.jpg" />
+    <Content Include="Imagenes\usu17.jpg" />
+    <Content Include="Imagenes\usu18.png" />
+    <Content Include="Imagenes\usu19.jpg" />
+    <Content Include="Imagenes\usu20.jpeg" />
     <Content Include="Models\ProyectoVerisADO.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ProyectoVerisADO.edmx</DependentUpon>
@@ -361,6 +381,8 @@
     <Content Include="Views\Receta\Index.cshtml" />
     <Content Include="Views\Rol\Index.cshtml" />
     <Content Include="Views\Rol\AsignarRol.cshtml" />
+    <Content Include="Views\Paciente\Foto_Paciente.cshtml" />
+    <Content Include="Views\Medico\Foto_Medico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

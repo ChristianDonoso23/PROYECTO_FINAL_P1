@@ -1,76 +1,59 @@
 ﻿@model IEnumerable<WebApplication02_Con_Autenticacion.Models.pacientes>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Gestión de Pacientes</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cedula)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Edad)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Genero)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Estatura)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Peso)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Foto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUsers.Email)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @item.Cedula.ToString("D10")
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Edad)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Genero)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Estatura)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Peso)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Foto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUsers.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdPaciente }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdPaciente }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdPaciente })
-        </td>
-    </tr>
+@if (User.IsInRole("Administrador") || User.IsInRole("SuperAdmin"))
+{
+    <p>
+        @Html.ActionLink("Crear Nuevo", "Create", null, new { @class = "btn btn-success mb-3" })
+    </p>
 }
 
+<table class="table table-striped table-bordered">
+    <tr class="table-dark">
+        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+        <th>@Html.DisplayNameFor(model => model.Cedula)</th>
+        <th>@Html.DisplayNameFor(model => model.Edad)</th>
+        <th>@Html.DisplayNameFor(model => model.Genero)</th>
+        <th>@Html.DisplayNameFor(model => model.Estatura)</th>
+        <th>@Html.DisplayNameFor(model => model.Peso)</th>
+        <th>@Html.DisplayNameFor(model => model.Foto)</th>
+        <th>@Html.DisplayNameFor(model => model.AspNetUsers.Email)</th>
+        <th>Acciones</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+            <td>@item.Cedula.ToString("D10")</td>
+            <td>@Html.DisplayFor(modelItem => item.Edad)</td>
+            <td>@Html.DisplayFor(modelItem => item.Genero)</td>
+            <td>@Html.DisplayFor(modelItem => item.Estatura)</td>
+            <td>@Html.DisplayFor(modelItem => item.Peso)</td>
+            <td>
+                <img src="~/Content/FotosPacientes/@item.Foto" alt="Foto" width="70" class="rounded" />
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.AspNetUsers.Email)</td>
+
+            <td>
+                @Html.ActionLink("Detalles", "Details", new { id = item.IdPaciente }, new { @class = "btn btn-info btn-sm mx-1" })
+
+                @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdmin") || User.IsInRole("Medico"))
+                {
+                    @Html.ActionLink("Editar", "Edit", new { id = item.IdPaciente }, new { @class = "btn btn-warning btn-sm mx-1" })
+                }
+
+                @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdmin"))
+                {
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.IdPaciente }, new { @class = "btn btn-danger btn-sm mx-1" })
+                }
+            </td>
+        </tr>
+    }
 </table>

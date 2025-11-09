@@ -37,7 +37,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // GET: Consulta/Create
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, Medico")]
         public ActionResult Create()
         {
             ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "Nombre");
@@ -48,7 +48,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         // POST: Consulta/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, Medico")]
         public ActionResult Create([Bind(Include = "IdConsulta,IdMedico,IdPaciente,FechaConsulta,HI,HF,Diagnostico")] consultas consulta)
         {
             if (ModelState.IsValid)

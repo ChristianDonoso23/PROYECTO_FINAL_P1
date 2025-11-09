@@ -1,67 +1,75 @@
 ﻿@model WebApplication02_Con_Autenticacion.Models.medicos
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar Médico";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
-
+<h2>Editar Médico</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>medicos</h4>
+        <h4>Datos del Médico</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.IdMedico)
+        @Html.HiddenFor(model => model.IdUsuario)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IdEspecialidad, "IdEspecialidad", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IdEspecialidad, "Especialidad", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("IdEspecialidad", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("IdEspecialidad", null, "-- Seleccione especialidad --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IdEspecialidad, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IdUsuario, "IdUsuario", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Foto, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("IdUsuario", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                @Html.DropDownListFor(model => model.Foto, (SelectList)ViewBag.Fotos,
+                    "-- Seleccione una imagen --",
+                    new { @class = "form-control", id = "FotoSelect" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Foto, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Foto, new { htmlAttributes = new { @class = "form-control" } })
+                <img id="previewFoto" src="~/Imagenes/@Model.Foto"
+                     alt="Vista previa"
+                     style="max-width:150px; margin-top:10px; display:@(string.IsNullOrEmpty(Model.Foto) ? "none" : "block");" />
+
                 @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-3">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+                @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary ms-2" })
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        document.getElementById("FotoSelect").addEventListener("change", function () {
+            var selectedFile = this.value;
+            var preview = document.getElementById("previewFoto");
+            if (selectedFile) {
+                preview.src = "/Imagenes/" + selectedFile;
+                preview.style.display = "block";
+            } else {
+                preview.style.display = "none";
+            }
+        });
+    </script>
 }

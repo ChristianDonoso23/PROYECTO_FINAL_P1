@@ -1,64 +1,80 @@
 ﻿@model WebApplication02_Con_Autenticacion.Models.medicos
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Registrar Médico";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Registrar Médico</h2>
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>medicos</h4>
+        <h4>Datos del Médico</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
+        <!-- 🔹 Selección de usuario existente o creación automática -->
         <div class="form-group">
-            @Html.LabelFor(model => model.IdEspecialidad, "IdEspecialidad", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IdUsuario, "Usuario asociado", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("IdEspecialidad", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IdEspecialidad, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IdUsuario, "IdUsuario", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IdUsuario", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList(
+                    "IdUsuario",
+                    (SelectList)ViewBag.IdUsuario,
+                    "-- Crear nuevo usuario automáticamente --",
+                    new { @class = "form-control" }
+                )
+                <small class="form-text text-muted">
+                    Si no selecciona un usuario, el sistema generará uno nuevo automáticamente
+                    con correo <b>hotmail.com</b> y contraseña <b>123</b>.
+                </small>
                 @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "text-danger" })
             </div>
         </div>
 
+        <!-- 🔹 Nombre -->
         <div class="form-group">
-            @Html.LabelFor(model => model.Foto, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Foto, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Ejemplo: Juan Pérez" })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- 🔹 Especialidad -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdEspecialidad, "Especialidad", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("IdEspecialidad", (SelectList)ViewBag.IdEspecialidad, "-- Seleccione una especialidad --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdEspecialidad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- 🔹 Foto -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.Foto, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(
+                    model => model.Foto,
+                    (SelectList)ViewBag.Fotos,
+                    "-- Seleccione una imagen --",
+                    new { @class = "form-control" }
+                )
                 @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        <!-- 🔹 Botones -->
+        <div class="form-group mt-3">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Registrar" class="btn btn-success" />
+                @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary ms-2" })
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

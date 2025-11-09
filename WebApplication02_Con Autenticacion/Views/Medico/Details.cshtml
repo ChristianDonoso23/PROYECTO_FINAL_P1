@@ -23,9 +23,9 @@
             @Html.DisplayNameFor(model => model.Foto)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Foto)
-        </dd>
+        <div class="clearfix">
+            @Html.Partial("Foto_Medico", Model)
+        </div>
 
         <dt>
             @Html.DisplayNameFor(model => model.AspNetUsers.Email)

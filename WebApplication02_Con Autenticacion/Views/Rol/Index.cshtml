@@ -11,7 +11,7 @@
     <tr>
         <th>Email</th>
         <th>Rol Actual</th>
-        <th>Acción</th>
+        <th>Acciones</th>
     </tr>
 
     @foreach (var item in Model)
@@ -19,12 +19,22 @@
         <tr>
             <td>@item.Email</td>
             <td>@item.Roles</td>
-            <td>@Html.ActionLink("Asignar Rol", "AsignarRol", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })</td>
+            <td>
+                @Html.ActionLink("Asignar Rol", "AsignarRol", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+
+                @using (Html.BeginForm("QuitarRol", "Rol", new { id = item.Id }, FormMethod.Post, new { @style = "display:inline-block" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de quitar todos los roles a este usuario?');">
+                        Quitar Rol
+                    </button>
+                }
+            </td>
         </tr>
     }
 </table>
 
 @if (TempData["Mensaje"] != null)
 {
-    <div class="alert alert-success mt-2">@TempData["Mensaje"]</div>
+    <div class="alert alert-info mt-2">@TempData["Mensaje"]</div>
 }
