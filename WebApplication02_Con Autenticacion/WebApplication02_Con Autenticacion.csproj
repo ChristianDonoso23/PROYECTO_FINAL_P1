@@ -256,9 +256,14 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\styles.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Imagenes\Logo\carrusel1.jpg" />
+    <Content Include="Imagenes\Logo\carrusel2.jpg" />
+    <Content Include="Imagenes\Logo\carrusel3.jpg" />
+    <Content Include="Imagenes\Logo\logo.png" />
     <Content Include="Imagenes\usu01.jpg" />
     <Content Include="Imagenes\usu02.jpg" />
     <Content Include="Imagenes\usu03.jpg" />

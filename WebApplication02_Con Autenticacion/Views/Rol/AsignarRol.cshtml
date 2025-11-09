@@ -5,18 +5,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Asignar Rol a Usuario</h2>
-<h4>@Model.Email</h4>
-<hr />
+<main class="container my-5 veris-crear-container">
+    <h2 class="veris-crear-title">Asignar Rol a Usuario</h2>
+    <p class="veris-crear-subtitle">Correo del usuario: <strong>@Model.Email</strong></p>
+    <hr class="veris-crear-divider" />
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div class="form-group">
-        @Html.Label("Seleccione un rol:")
-        @Html.DropDownList("rolSeleccionado", (SelectList)ViewBag.Roles, "Seleccione...", new { @class = "form-control" })
-    </div>
-    <br />
-    <button type="submit" class="btn btn-success">Guardar</button>
-    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary ms-2" })
-}
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="veris-crear-form">
+            <!-- Dropdown de roles -->
+            <div class="form-group mb-3">
+                @Html.Label("Seleccione un rol:", new { @class = "control-label fw-semibold" })
+                @Html.DropDownList("rolSeleccionado",
+                                   (SelectList)ViewBag.Roles,
+                                   "Seleccione...",
+                                   new { @class = "form-select veris-crear-input" })
+            </div>
+
+            <!-- Botones -->
+            <div class="veris-crear-button-group text-center mt-4">
+                <button type="submit" class="btn veris-crear-btn">Guardar Rol</button>
+                @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-outline-secondary ms-2" })
+            </div>
+        </div>
+    }
+</main>

@@ -1,5 +1,13 @@
 ﻿@model WebApplication02_Con_Autenticacion.Models.pacientes
 
-@* Desplegar la foto *@
-<img src="~/Imagenes/@Model.Foto" alt="SIN FOTO" class="img-fluid float-start w-25 me-3">
-
+@if (!string.IsNullOrEmpty(Model.Foto))
+{
+    <img src="~/Imagenes/@Model.Foto"
+         alt="Foto de @Model.Nombre"
+         class="img-fluid veris-detalle-img"
+         style="border-radius:10px; max-height:250px; object-fit:cover;" />
+}
+else
+{
+    <div class="text-muted small">Sin foto disponible</div>
+}

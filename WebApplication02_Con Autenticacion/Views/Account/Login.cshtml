@@ -4,67 +4,66 @@
     ViewBag.Title = "Iniciar sesión";
 }
 
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <section id="loginForm">
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <h4>Utilice una cuenta local para iniciar sesión.</h4>
-                    <hr />
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="row">
-                        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
-                        </div>
-                    @*
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
-                    *@
-                    </div>
-                    <div class="row">
-                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="offset-md-2 col-md-10">
-                            <div class="checkbox">
-                                @Html.CheckBoxFor(m => m.RememberMe)
-                                @Html.LabelFor(m => m.RememberMe)
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="offset-md-2 col-md-10">
-                            <input type="submit" value="Iniciar sesión" class="btn btn-outline-dark" />
-                        </div>
-                    </div>
-                    <p>
-                        @Html.ActionLink("Registrarse como usuario nuevo", "Register")
-                    </p>
-                    @* Habilite esta opción una vez tenga la confirmación de la cuenta habilitada para la funcionalidad de restablecimiento de contraseña
-                        <p>
-                            @Html.ActionLink("¿Ha olvidado su contraseña?", "ForgotPassword")
-                        </p>*@
-                }
-            </section>
+
+<main class="container my-4 veris-login-container" aria-labelledby="title">
+    <section id="loginForm" class="veris-login-section">
+        <h2 id="title" class="veris-login-title mb-3 text-center">@ViewBag.Title</h2>
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "veris-login-form", role = "form", novalidate = "novalidate" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <h4 class="veris-login-subtitle text-center mb-3">Utilice una cuenta local para iniciar sesión.</h4>
+            <hr class="veris-login-divider" />
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger veris-login-validation", id = "validation-summary", aria_live = "polite" })
+
+            <!-- Usuario -->
+            <div class="mb-3 veris-login-group">
+                @Html.LabelFor(m => m.UserName, "Usuario", new { @class = "veris-login-label" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control veris-login-input", required = "required", autocomplete = "username" })
+                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger d-block veris-login-error", id = "UserName-error" })
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-3 veris-login-group">
+                @Html.LabelFor(m => m.Password, "Contraseña", new { @class = "veris-login-label" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control veris-login-input", required = "required", autocomplete = "current-password" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger d-block veris-login-error", id = "Password-error" })
+            </div>
+
+            <!-- Recordarme -->
+            <div class="mb-3 form-check veris-login-check">
+                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input veris-login-check-input", id = "RememberMe" })
+                @Html.LabelFor(m => m.RememberMe, new { @class = "form-check-label veris-login-check-label" })
+            </div>
+
+            <!-- Botón -->
+            <div class="mb-3 text-center">
+                <input type="submit" value="Iniciar sesión" class="btn btn-primary veris-login-btn w-100" />
+            </div>
+
+            <!-- Registro -->
+            <p class="text-center veris-login-register">
+                @Html.ActionLink("Registrarse como usuario nuevo", "Register", null, new { @class = "veris-login-link" })
+            </p>
+
+            <!-- Opcional: Recuperar contraseña
+            <p class="text-center">
+                @Html.ActionLink("¿Ha olvidado su contraseña?", "ForgotPassword", null, new { @class = "veris-login-link" })
+            </p> -->
+        }
+
+        <!-- Login con redes sociales -->
+        <div class="veris-login-social text-center mt-4">
+            <h5 class="veris-login-social-title mb-3">Iniciar sesión con</h5>
+            <div class="d-grid gap-2 veris-login-social-grid">
+                <a class="btn btn-light border veris-login-social-btn" href="@Url.Action("ExternalLogin", "Account", new { provider = "Google" })">Google</a>
+                <a class="btn btn-light border veris-login-social-btn" href="@Url.Action("ExternalLogin", "Account", new { provider = "Microsoft" })">Microsoft</a>
+                <a class="btn btn-light border veris-login-social-btn" href="@Url.Action("ExternalLogin", "Account", new { provider = "Facebook" })">Facebook</a>
+            </div>
         </div>
-        <div class="col-md-4">
-            <section id="socialLoginForm">
-                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-            </section>
-        </div>
-    </div>
+    </section>
 </main>
 
 @section Scripts {

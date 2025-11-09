@@ -1,73 +1,46 @@
 ﻿@model WebApplication02_Con_Autenticacion.Models.consultas
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Eliminar Consulta Médica";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<main class="container my-5 veris-delete-container">
+    <div class="veris-delete-card shadow-lg p-4 rounded">
+        <h2 class="veris-delete-title text-center mb-3">Eliminar Consulta Médica</h2>
+        <p class="text-center text-muted mb-4">
+            ¿Está seguro de que desea eliminar esta consulta médica?
+            <strong>Esta acción no se puede deshacer.</strong>
+        </p>
+        <hr class="veris-delete-divider" />
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>consultas</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaConsulta)
-        </dt>
+        <dl class="row veris-delete-list mb-4">
+            <dt class="col-sm-4 veris-delete-label">@Html.DisplayNameFor(model => model.FechaConsulta)</dt>
+            <dd class="col-sm-8 veris-delete-value">@Html.DisplayFor(model => model.FechaConsulta)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.FechaConsulta)
-        </dd>
+            <dt class="col-sm-4 veris-delete-label">@Html.DisplayNameFor(model => model.HI)</dt>
+            <dd class="col-sm-8 veris-delete-value">@Html.DisplayFor(model => model.HI)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.HI)
-        </dt>
+            <dt class="col-sm-4 veris-delete-label">@Html.DisplayNameFor(model => model.HF)</dt>
+            <dd class="col-sm-8 veris-delete-value">@Html.DisplayFor(model => model.HF)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.HI)
-        </dd>
+            <dt class="col-sm-4 veris-delete-label">@Html.DisplayNameFor(model => model.Diagnostico)</dt>
+            <dd class="col-sm-8 veris-delete-value">@Html.DisplayFor(model => model.Diagnostico)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.HF)
-        </dt>
+            <dt class="col-sm-4 veris-delete-label">Paciente</dt>
+            <dd class="col-sm-8 veris-delete-value">@Html.DisplayFor(model => model.pacientes.Nombre)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.HF)
-        </dd>
+            <dt class="col-sm-4 veris-delete-label">Médico</dt>
+            <dd class="col-sm-8 veris-delete-value">@Html.DisplayFor(model => model.medicos.Nombre)</dd>
+        </dl>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Diagnostico)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Diagnostico)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.pacientes.IdUsuario)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.pacientes.IdUsuario)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.medicos.Nombre)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.medicos.Nombre)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
-</div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="veris-delete-buttons text-center">
+                <input type="submit" value="Eliminar definitivamente" class="btn btn-danger veris-delete-btn mx-2" />
+                @Html.ActionLink("Cancelar y volver", "Index", null, new { @class = "btn btn-outline-secondary veris-delete-cancel mx-2" })
+            </div>
+        }
+    </div>
+</main>

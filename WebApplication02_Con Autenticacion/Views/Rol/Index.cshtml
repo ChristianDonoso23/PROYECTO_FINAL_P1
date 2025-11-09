@@ -1,40 +1,61 @@
 ﻿@model IEnumerable<WebApplication02_Con_Autenticacion.Models.ViewModels.UserRoleViewModel>
 
 @{
-    ViewBag.Title = "Gestión de Roles";
+    ViewBag.Title = "Gestión de Roles de Usuarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Gestión de Roles de Usuarios</h2>
+<main class="container my-5 veris-tabla-container">
+    <h2 class="veris-tabla-title">Gestión de Roles de Usuarios</h2>
 
-<table class="table table-bordered table-striped">
-    <tr>
-        <th>Email</th>
-        <th>Rol Actual</th>
-        <th>Acciones</th>
-    </tr>
+    <div class="veris-tabla-wrapper">
+        <table class="table veris-tabla table-bordered table-striped align-middle">
+            <thead class="veris-tabla-thead">
+                <tr>
+                    <th>Email</th>
+                    <th>Rol Actual</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Email</td>
-            <td>@item.Roles</td>
-            <td>
-                @Html.ActionLink("Asignar Rol", "AsignarRol", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
-
-                @using (Html.BeginForm("QuitarRol", "Rol", new { id = item.Id }, FormMethod.Post, new { @style = "display:inline-block" }))
+            <tbody>
+                @foreach (var item in Model)
                 {
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de quitar todos los roles a este usuario?');">
-                        Quitar Rol
-                    </button>
-                }
-            </td>
-        </tr>
-    }
-</table>
+                    <tr>
+                        <td>@item.Email</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Roles))
+                            {
+                                <span class="badge bg-primary">@item.Roles</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Sin rol asignado</span>
+                            }
+                        </td>
+                        <td class="veris-tabla-acciones">
+                            @Html.ActionLink("Asignar Rol", "AsignarRol", new { id = item.Id }, new { @class = "btn veris-tabla-btn detalles" })
 
-@if (TempData["Mensaje"] != null)
-{
-    <div class="alert alert-info mt-2">@TempData["Mensaje"]</div>
-}
+                            @using (Html.BeginForm("QuitarRol", "Rol", new { id = item.Id }, FormMethod.Post, new { @style = "display:inline-block" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit"
+                                        class="btn veris-tabla-btn eliminar"
+                                        onclick="return confirm('¿Está seguro de quitar todos los roles a este usuario?');">
+                                    Quitar Rol
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-info text-center mt-3 shadow-sm">
+            @TempData["Mensaje"]
+        </div>
+    }
+</main>

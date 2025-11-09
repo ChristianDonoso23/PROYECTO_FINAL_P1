@@ -1,41 +1,41 @@
 ﻿@model WebApplication02_Con_Autenticacion.Models.medicamentos
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Eliminar Medicamento";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<main class="container my-5 veris-eliminar-container">
+    <div class="veris-eliminar-card shadow p-4 rounded">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>medicamentos</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
+        <h2 class="veris-eliminar-title text-center mb-3">Eliminar Medicamento</h2>
+        <p class="text-center text-muted mb-4">¿Está seguro de que desea eliminar este medicamento? Esta acción no se puede deshacer.</p>
+        <hr class="veris-eliminar-divider" />
 
-        <dd>
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-4 veris-eliminar-label">@Html.DisplayNameFor(model => model.Nombre)</dt>
+                    <dd class="col-sm-8 veris-eliminar-value">@Html.DisplayFor(model => model.Nombre)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Tipo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Tipo)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+                    <dt class="col-sm-4 veris-eliminar-label">@Html.DisplayNameFor(model => model.Tipo)</dt>
+                    <dd class="col-sm-8 veris-eliminar-value">@Html.DisplayFor(model => model.Tipo)</dd>
+                </dl>
+            </div>
         </div>
-    }
-</div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="veris-eliminar-buttons text-center mt-4">
+                <input type="submit" value="Eliminar" class="btn veris-eliminar-btn mx-2" />
+                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-outline-secondary veris-eliminar-back mx-2" })
+            </div>
+        }
+    </div>
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

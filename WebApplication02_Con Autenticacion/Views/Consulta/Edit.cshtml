@@ -1,82 +1,72 @@
 ﻿@model WebApplication02_Con_Autenticacion.Models.consultas
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar Consulta Médica";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<main class="container my-5 veris-editar-container">
+    <div class="veris-editar-card shadow-lg p-4 rounded">
+        <h2 class="veris-editar-title text-center mb-3">Editar Consulta Médica</h2>
+        <p class="veris-editar-subtitle text-center">Modifique los datos necesarios y guarde los cambios</p>
+        <hr class="veris-editar-divider" />
 
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger veris-editar-validation" })
+            @Html.HiddenFor(model => model.IdConsulta)
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>consultas</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.IdConsulta)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IdMedico, "IdMedico", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IdMedico", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IdMedico, "", new { @class = "text-danger" })
+            <!-- 🔹 Médico -->
+            <div class="form-group mb-3 veris-editar-group">
+                @Html.LabelFor(model => model.IdMedico, "Médico", htmlAttributes: new { @class = "veris-editar-label" })
+                @Html.DropDownList("IdMedico", null, "-- Seleccione un médico --", htmlAttributes: new { @class = "form-control veris-editar-input" })
+                @Html.ValidationMessageFor(model => model.IdMedico, "", new { @class = "text-danger veris-editar-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IdPaciente, "IdPaciente", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IdPaciente", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IdPaciente, "", new { @class = "text-danger" })
+            <!-- 🔹 Paciente -->
+            <div class="form-group mb-3 veris-editar-group">
+                @Html.LabelFor(model => model.IdPaciente, "Paciente", htmlAttributes: new { @class = "veris-editar-label" })
+                @Html.DropDownList("IdPaciente", null, "-- Seleccione un paciente --", htmlAttributes: new { @class = "form-control veris-editar-input" })
+                @Html.ValidationMessageFor(model => model.IdPaciente, "", new { @class = "text-danger veris-editar-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.FechaConsulta, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FechaConsulta, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FechaConsulta, "", new { @class = "text-danger" })
+            <!-- 🔹 Fecha -->
+            <div class="form-group mb-3 veris-editar-group">
+                @Html.LabelFor(model => model.FechaConsulta, htmlAttributes: new { @class = "veris-editar-label" })
+                @Html.EditorFor(model => model.FechaConsulta, new { htmlAttributes = new { @class = "form-control veris-editar-input", type = "date" } })
+                @Html.ValidationMessageFor(model => model.FechaConsulta, "", new { @class = "text-danger veris-editar-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.HI, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.HI, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.HI, "", new { @class = "text-danger" })
+            <!-- 🔹 Hora inicio -->
+            <div class="form-group mb-3 veris-editar-group">
+                @Html.LabelFor(model => model.HI, "Hora de Inicio", htmlAttributes: new { @class = "veris-editar-label" })
+                @Html.EditorFor(model => model.HI, new { htmlAttributes = new { @class = "form-control veris-editar-input", type = "time" } })
+                @Html.ValidationMessageFor(model => model.HI, "", new { @class = "text-danger veris-editar-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.HF, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.HF, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.HF, "", new { @class = "text-danger" })
+            <!-- 🔹 Hora fin -->
+            <div class="form-group mb-3 veris-editar-group">
+                @Html.LabelFor(model => model.HF, "Hora de Finalización", htmlAttributes: new { @class = "veris-editar-label" })
+                @Html.EditorFor(model => model.HF, new { htmlAttributes = new { @class = "form-control veris-editar-input", type = "time" } })
+                @Html.ValidationMessageFor(model => model.HF, "", new { @class = "text-danger veris-editar-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Diagnostico, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Diagnostico, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Diagnostico, "", new { @class = "text-danger" })
+            <!-- 🔹 Diagnóstico -->
+            <div class="form-group mb-4 veris-editar-group">
+                @Html.LabelFor(model => model.Diagnostico, htmlAttributes: new { @class = "veris-editar-label" })
+                @Html.TextAreaFor(model => model.Diagnostico, 5, 40, new { @class = "form-control veris-editar-input", placeholder = "Describa el diagnóstico..." })
+                @Html.ValidationMessageFor(model => model.Diagnostico, "", new { @class = "text-danger veris-editar-error" })
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <!-- 🔹 Botones -->
+            <div class="veris-editar-button-group text-center mt-4">
+                <input type="submit" value="Guardar Cambios" class="btn veris-editar-btn" />
+                @Html.ActionLink("Volver a la lista", "Index", null, new { @class = "btn btn-outline-secondary veris-editar-back ms-2" })
             </div>
-        </div>
+        }
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+</main>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

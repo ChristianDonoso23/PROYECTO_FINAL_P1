@@ -1,80 +1,109 @@
 ﻿@using Microsoft.AspNet.Identity
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Proyecto VERIS</title>
+
+    <!-- Bootstrap -->
+    <!-- Iconos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Estilos del proyecto -->
+    <link rel="stylesheet" href="~/Content/styles.css" />
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("VERIS - Gestión Médica", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-2">
+        <div class="container-fluid px-4">
+            <!-- LOGO -->
+            <a class="navbar-brand d-flex flex-column align-items-start" href="@Url.Action("Index", "Home")">
+                <img src="~/Imagenes/Logo/logo.png" alt="Logo Veris" class="img-fluid mb-1" style="height: 35px; width: 100%;">
+                <span class="slogan">Hacemos <strong>fácil cuidarte</strong></span>
+            </a>
+
+            <!-- Botón hamburguesa -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
                     aria-controls="menuPrincipal" aria-expanded="false" aria-label="Alternar navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="menuPrincipal">
-                <ul class="navbar-nav flex-grow-1">
+            <!-- MENÚ -->
+            <div class="collapse navbar-collapse justify-content-between" id="menuPrincipal">
+                <ul class="navbar-nav flex-grow-1 justify-content-evenly text-center">
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        // 🔹 SuperAdmin: acceso total
                         if (User.IsInRole("SuperAdmin"))
                         {
-                            <li>@Html.ActionLink("Pacientes", "Index", "Paciente", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Médicos", "Index", "Medico", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Especialidades", "Index", "Especialidad", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Medicamentos", "Index", "Medicamento", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Consultas", "Index", "Consulta", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Recetas", "Index", "Receta", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Gestión de Roles", "Index", "Rol", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Pacientes", "Index", "Paciente", null, new { @class = "nav-link bi bi-people-fill" })</li>
+                            <li class="nav-item">@Html.ActionLink("Médicos", "Index", "Medico", null, new { @class = "nav-link bi bi-person-badge-fill" })</li>
+                            <li class="nav-item">@Html.ActionLink("Especialidades", "Index", "Especialidad", null, new { @class = "nav-link bi bi-heart-pulse" })</li>
+                            <li class="nav-item">@Html.ActionLink("Medicamentos", "Index", "Medicamento", null, new { @class = "nav-link bi bi-capsule" })</li>
+                            <li class="nav-item">@Html.ActionLink("Consultas", "Index", "Consulta", null, new { @class = "nav-link bi bi-clipboard2-pulse" })</li>
+                            <li class="nav-item">@Html.ActionLink("Recetas", "Index", "Receta", null, new { @class = "nav-link bi bi-receipt" })</li>
+                            <li class="nav-item">@Html.ActionLink("Gestión de Roles", "Index", "Rol", null, new { @class = "nav-link bi bi-shield-lock-fill" })</li>
                         }
-
-                        // 🔹 Administrador: todo menos consultas y recetas
                         else if (User.IsInRole("Administrador"))
                         {
-                            <li>@Html.ActionLink("Pacientes", "Index", "Paciente", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Médicos", "Index", "Medico", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Especialidades", "Index", "Especialidad", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Medicamentos", "Index", "Medicamento", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Gestión de Roles", "Index", "Rol", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Pacientes", "Index", "Paciente", null, new { @class = "nav-link bi bi-people-fill" })</li>
+                            <li class="nav-item">@Html.ActionLink("Médicos", "Index", "Medico", null, new { @class = "nav-link bi bi-person-badge-fill" })</li>
+                            <li class="nav-item">@Html.ActionLink("Especialidades", "Index", "Especialidad", null, new { @class = "nav-link bi bi-heart-pulse" })</li>
+                            <li class="nav-item">@Html.ActionLink("Medicamentos", "Index", "Medicamento", null, new { @class = "nav-link bi bi-capsule" })</li>
+                            <li class="nav-item">@Html.ActionLink("Gestión de Roles", "Index", "Rol", null, new { @class = "nav-link bi bi-shield-lock-fill" })</li>
                         }
-
-                        // 🔹 Médico: solo consultas y recetas
                         else if (User.IsInRole("Medico"))
                         {
-                            <li>@Html.ActionLink("Consultas", "Index", "Consulta", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Recetas", "Index", "Receta", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Consultas", "Index", "Consulta", null, new { @class = "nav-link bi bi-clipboard2-pulse" })</li>
+                            <li class="nav-item">@Html.ActionLink("Recetas", "Index", "Receta", null, new { @class = "nav-link bi bi-receipt" })</li>
                         }
-
-                        // 🔹 Paciente: solo su perfil
                         else if (User.IsInRole("Paciente"))
                         {
-                            <li>@Html.ActionLink("Mis Datos", "Index", "Paciente", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Mis Datos", "Index", "Paciente", null, new { @class = "nav-link bi bi-person-circle" })</li>
                         }
                     }
                 </ul>
 
-                @Html.Partial("_LoginPartial")
+                <!-- Sección de Login / Logout -->
+                <div class="d-flex flex-wrap justify-content-center justify-content-lg-end mt-2 mt-lg-0">
+                    @Html.Partial("_LoginPartial")
+                </div>
             </div>
         </div>
     </nav>
 
-
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="container body-content mt-4">
         @RenderBody()
         <hr />
-        <footer class="text-center text-muted">
-            <p>&copy; @DateTime.Now.Year - Proyecto VERIS</p>
-        </footer>
     </div>
+
+    <!-- FOOTER VERIS -->
+    <footer class="footer-veris mt-5">
+        <!-- Franja superior con redes -->
+        <div class="footer-top text-center text-white py-3 bg-primary">
+            <h6 class="mb-2">Encuentra nuestras redes sociales</h6>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#" class="social-icon text-white"><i class="bi bi-whatsapp"></i></a>
+                <a href="#" class="social-icon text-white"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="social-icon text-white"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="social-icon text-white"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="social-icon text-white"><i class="bi bi-youtube"></i></a>
+            </div>
+        </div>
+
+        <!-- Franja inferior -->
+        <div class="footer-bottom text-center text-white py-3 bg-dark">
+            © @DateTime.Now.Year - Proyecto VERIS
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

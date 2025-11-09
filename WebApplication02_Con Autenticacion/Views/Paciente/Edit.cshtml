@@ -5,105 +5,115 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar Paciente</h2>
+<div class="container my-5 veris-crear-container">
+    <h2 class="veris-crear-title text-center mb-3">Editar Paciente</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4>Datos del Paciente</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal veris-crear-form" }))
+    {
+        @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.IdPaciente)
         @Html.HiddenFor(model => model.IdUsuario)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+        <h4 class="veris-crear-subtitle text-center">Actualice los datos del paciente</h4>
+        <hr class="veris-crear-divider" />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger veris-crear-validation" })
+
+        <!-- Nombre -->
+        <div class="form-group row mb-3 veris-crear-group">
+            @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-3 veris-crear-label" })
+            <div class="col-md-9 veris-crear-input-col">
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control veris-crear-input", placeholder = "Ejemplo: Christian Donoso" })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Cedula, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Cedula, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Cedula, "", new { @class = "text-danger" })
+        <!-- Cédula -->
+        <div class="form-group row mb-3 veris-crear-group">
+            @Html.LabelFor(model => model.Cedula, new { @class = "control-label col-md-3 veris-crear-label" })
+            <div class="col-md-9 veris-crear-input-col">
+                @Html.TextBoxFor(model => model.Cedula, new { @class = "form-control veris-crear-input", maxlength = "10" })
+                @Html.ValidationMessageFor(model => model.Cedula, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Edad, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Edad, new { @class = "form-control", type = "number" })
-                @Html.ValidationMessageFor(model => model.Edad, "", new { @class = "text-danger" })
+        <!-- Edad -->
+        <div class="form-group row mb-3 veris-crear-group">
+            @Html.LabelFor(model => model.Edad, new { @class = "control-label col-md-3 veris-crear-label" })
+            <div class="col-md-9 veris-crear-input-col">
+                @Html.TextBoxFor(model => model.Edad, new { @class = "form-control veris-crear-input", type = "number", min = "0", max = "120" })
+                @Html.ValidationMessageFor(model => model.Edad, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Genero, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select id="Genero" name="Genero" class="form-control">
+        <!-- Género -->
+        <div class="form-group row mb-3 veris-crear-group">
+            @Html.LabelFor(model => model.Genero, new { @class = "control-label col-md-3 veris-crear-label" })
+            <div class="col-md-9 veris-crear-input-col">
+                <select id="Genero" name="Genero" class="form-control veris-crear-input">
                     <option value="">Seleccione...</option>
-                    <option value="M" @(Model.Genero == "M" ? "selected" : "")>Masculino</option>
-                    <option value="F" @(Model.Genero == "F" ? "selected" : "")>Femenino</option>
-                    <option value="O" @(Model.Genero == "O" ? "selected" : "")>Otro</option>
+                    <option value="Masculino" @(Model.Genero == "Masculino" ? "selected" : "")>Masculino</option>
+                    <option value="Femenino" @(Model.Genero == "Femenino" ? "selected" : "")>Femenino</option>
+                    <option value="Otro" @(Model.Genero == "Otro" ? "selected" : "")>Otro</option>
                 </select>
-                @Html.ValidationMessageFor(model => model.Genero, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Genero, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Estatura, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Estatura, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Estatura, "", new { @class = "text-danger" })
+        <!-- Estatura -->
+        <div class="form-group row mb-3 veris-crear-group">
+            @Html.LabelFor(model => model.Estatura, new { @class = "control-label col-md-3 veris-crear-label" })
+            <div class="col-md-9 veris-crear-input-col">
+                @Html.TextBoxFor(model => model.Estatura, new { @class = "form-control veris-crear-input", placeholder = "Ejemplo: 170 (cm)" })
+                @Html.ValidationMessageFor(model => model.Estatura, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Peso, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Peso, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Peso, "", new { @class = "text-danger" })
+        <!-- Peso -->
+        <div class="form-group row mb-3 veris-crear-group">
+            @Html.LabelFor(model => model.Peso, new { @class = "control-label col-md-3 veris-crear-label" })
+            <div class="col-md-9 veris-crear-input-col">
+                @Html.TextBoxFor(model => model.Peso, new { @class = "form-control veris-crear-input", placeholder = "Ejemplo: 70.5 (kg)" })
+                @Html.ValidationMessageFor(model => model.Peso, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Foto, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+        <!-- Foto -->
+        <div class="form-group row mb-3 veris-crear-group">
+            @Html.LabelFor(model => model.Foto, new { @class = "control-label col-md-3 veris-crear-label" })
+            <div class="col-md-9 veris-crear-input-col">
                 @Html.DropDownListFor(model => model.Foto, (SelectList)ViewBag.Fotos,
-                    "-- Seleccione una imagen --", new { @class = "form-control", id = "FotoSelect" })
+                    "-- Seleccione una imagen --", new { @class = "form-control veris-crear-input", id = "FotoSelect" })
 
-                <img id="previewFoto" src="~/Imagenes/@Model.Foto"
+                <img id="previewFoto"
+                     src="~/Imagenes/@Model.Foto"
                      alt="Vista previa"
-                     style="max-width:150px; margin-top:10px; display:@(string.IsNullOrEmpty(Model.Foto) ? "none" : "block");" />
+                     class="img-thumbnail mt-3 shadow-sm"
+                     style="max-width:150px; border-radius:10px; display:@(string.IsNullOrEmpty(Model.Foto) ? "none" : "block");" />
 
-                @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
 
-        <div class="form-group mt-3">
+        <!-- Botones -->
+        <div class="form-group row mt-4 text-center veris-crear-button-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
-                @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary ms-2" })
+                <input type="submit" value="Guardar Cambios" class="btn veris-crear-btn btn-primary" />
+                @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-outline-secondary veris-crear-back ms-2" })
             </div>
         </div>
-    </div>
-}
+    }
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
     <script>
-        // Mostrar vista previa de la imagen seleccionada
+        // Vista previa de la foto seleccionada
         document.getElementById("FotoSelect").addEventListener("change", function () {
-            var selectedFile = this.value;
-            var preview = document.getElementById("previewFoto");
+            const selectedFile = this.value;
+            const preview = document.getElementById("previewFoto");
             if (selectedFile) {
-                preview.src = "/Imagenes/" + selectedFile;
+                preview.src = "/Content/FotosPacientes/" + selectedFile;
                 preview.style.display = "block";
             } else {
                 preview.style.display = "none";

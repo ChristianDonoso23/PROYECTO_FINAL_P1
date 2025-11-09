@@ -5,55 +5,61 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Gestión de Consultas</h2>
+<main class="container my-4 veris-tabla-container">
+    <h2 class="veris-tabla-title">Gestión de Consultas Médicas</h2>
 
-<!-- Solo Médico y SuperAdmin pueden crear nuevas consultas -->
-@if (User.IsInRole("SuperAdmin") || User.IsInRole("Medico"))
-{
-    <p>
-        @Html.ActionLink("Registrar Nueva Consulta", "Create", null, new { @class = "btn btn-success mb-3" })
-    </p>
-}
+    <!-- Solo Médico y SuperAdmin pueden crear nuevas consultas -->
+    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Medico"))
+    {
+        <p>
+            @Html.ActionLink("Nueva Consulta", "Create", null, new { @class = "btn btn-primary mb-3" })
+        </p>
+    }
 
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.FechaConsulta)</th>
-            <th>@Html.DisplayNameFor(model => model.HI)</th>
-            <th>@Html.DisplayNameFor(model => model.HF)</th>
-            <th>@Html.DisplayNameFor(model => model.Diagnostico)</th>
-            <th>@Html.DisplayName("Paciente")</th>
-            <th>@Html.DisplayName("Médico")</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.FechaConsulta)</td>
-                <td>@Html.DisplayFor(modelItem => item.HI)</td>
-                <td>@Html.DisplayFor(modelItem => item.HF)</td>
-                <td>@Html.DisplayFor(modelItem => item.Diagnostico)</td>
-                <td>@Html.DisplayFor(modelItem => item.pacientes.Nombre)</td>
-                <td>@Html.DisplayFor(modelItem => item.medicos.Nombre)</td>
-                <td>
-                    <!-- Todos pueden ver detalles -->
-                    @Html.ActionLink("Detalles", "Details", new { id = item.IdConsulta }, new { @class = "btn btn-info btn-sm mx-1" })
+    <div class="veris-tabla-wrapper">
+        <table class="table veris-tabla table-bordered table-striped">
+            <thead class="veris-tabla-thead">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.FechaConsulta)</th>
+                    <th>@Html.DisplayNameFor(model => model.HI)</th>
+                    <th>@Html.DisplayNameFor(model => model.HF)</th>
+                    <th>@Html.DisplayNameFor(model => model.Diagnostico)</th>
+                    <th>@Html.DisplayName("Paciente")</th>
+                    <th>@Html.DisplayName("Médico")</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-                    <!-- Médico y SuperAdmin pueden editar -->
-                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Medico"))
-                    {
-                        @Html.ActionLink("Editar", "Edit", new { id = item.IdConsulta }, new { @class = "btn btn-warning btn-sm mx-1" })
-                    }
+            <tbody class="veris-tabla-body-content">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.FechaConsulta)</td>
+                        <td>@Html.DisplayFor(modelItem => item.HI)</td>
+                        <td>@Html.DisplayFor(modelItem => item.HF)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Diagnostico)</td>
+                        <td>@Html.DisplayFor(modelItem => item.pacientes.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.medicos.Nombre)</td>
 
-                    <!-- Solo SuperAdmin puede eliminar -->
-                    @if (User.IsInRole("SuperAdmin"))
-                    {
-                        @Html.ActionLink("Eliminar", "Delete", new { id = item.IdConsulta }, new { @class = "btn btn-danger btn-sm mx-1" })
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        <td class="veris-tabla-acciones">
+                            <!-- Todos pueden ver detalles -->
+                            @Html.ActionLink("Detalles", "Details", new { id = item.IdConsulta }, new { @class = "btn btn-sm veris-tabla-btn detalles" })
+
+                            <!-- Médico y SuperAdmin pueden editar -->
+                            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Medico"))
+                            {
+                                @Html.ActionLink("Editar", "Edit", new { id = item.IdConsulta }, new { @class = "btn btn-sm veris-tabla-btn editar" })
+                            }
+
+                            <!-- Solo SuperAdmin puede eliminar -->
+                            @if (User.IsInRole("SuperAdmin"))
+                            {
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdConsulta }, new { @class = "btn btn-sm veris-tabla-btn eliminar" })
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</main>
