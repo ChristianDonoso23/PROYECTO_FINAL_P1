@@ -7,7 +7,7 @@ using WebApplication02_Con_Autenticacion.Models.ViewModels;
 
 namespace WebApplication02_Con_Autenticacion.Controllers
 {
-    [Authorize(Roles = "SuperAdmin, Administrador")]
+    [Authorize(Roles = "SuperAdmin")]
     public class RolController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
