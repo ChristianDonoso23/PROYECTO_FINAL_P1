@@ -12,7 +12,6 @@
         <hr class="veris-detalle-divider" />
 
         <div class="row veris-detalle-content">
-            <!-- 📋 Columna izquierda -->
             <div class="col-md-7">
                 <dl class="row veris-detalle-list">
                     <dt class="col-sm-4 veris-detalle-label">@Html.DisplayNameFor(model => model.Nombre)</dt>
@@ -38,7 +37,6 @@
                 </dl>
             </div>
 
-            <!-- 🖼️ Columna derecha (foto parcial) -->
             <div class="col-md-5 text-center veris-detalle-foto">
                 <div class="veris-detalle-foto-wrapper p-3">
                     @if (!string.IsNullOrEmpty(Model.Foto))
@@ -58,7 +56,6 @@
             </div>
         </div>
 
-        <!-- 🔹 Botones -->
         <div class="veris-detalle-buttons text-center mt-4">
             @Html.ActionLink("Editar", "Edit", new { id = Model.IdPaciente }, new { @class = "btn btn-warning veris-detalle-btn mx-2" })
             @Html.ActionLink("Volver a la lista", "Index", null, new { @class = "btn btn-outline-secondary veris-detalle-back mx-2" })

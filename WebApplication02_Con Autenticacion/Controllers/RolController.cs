@@ -49,12 +49,12 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             if (user == null)
                 return HttpNotFound();
 
-            // Eliminar roles previos
+            /* Eliminar roles previos */
             var rolesActuales = userManager.GetRoles(user.Id).ToArray();
             if (rolesActuales.Any())
                 userManager.RemoveFromRoles(user.Id, rolesActuales);
 
-            // Asignar nuevo rol
+            /* Asignar nuevo rol */
             userManager.AddToRole(user.Id, rolSeleccionado);
 
             TempData["Mensaje"] = $"Rol '{rolSeleccionado}' asignado a {user.Email}";
@@ -71,10 +71,10 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             if (user == null)
                 return HttpNotFound();
 
-            // Obtener todos los roles del usuario
+            /* Obtener todos los roles del usuario */
             var rolesActuales = userManager.GetRoles(user.Id).ToArray();
 
-            // Si tiene alguno, se eliminan
+            /* Si tiene alguno, se eliminan */
             if (rolesActuales.Any())
             {
                 userManager.RemoveFromRoles(user.Id, rolesActuales);

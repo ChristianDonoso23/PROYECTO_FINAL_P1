@@ -45,12 +45,12 @@ namespace WebApplication02_Con_Autenticacion.Controllers
 
             var todosUsuarios = userManager.Users.ToList();
 
-            // 🔹 Usuarios con rol "Medico"
+            /*Listamos los usuarios con el rol de Médico*/
             var usuariosConRolMedico = todosUsuarios
                 .Where(u => userManager.IsInRole(u.Id, "Medico"))
                 .ToList();
 
-            // 🔹 Excluir los que ya tienen ficha
+            /* Filtramos los usuarios que ya tienen una ficha de médico */
             var usuariosConFicha = db.medicos.Select(m => m.IdUsuario).ToList();
             var usuariosDisponibles = usuariosConRolMedico
                 .Where(u => !usuariosConFicha.Contains(u.Id))
@@ -59,7 +59,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             ViewBag.IdUsuario = new SelectList(usuariosDisponibles, "Id", "Email");
             ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion");
 
-            // 🔹 Cargar imágenes desde la carpeta Imagenes
+            /* Listamos las fotos disponibles */
             string path = Server.MapPath("~/Imagenes");
             var archivos = System.IO.Directory.GetFiles(path)
                 .Select(f => System.IO.Path.GetFileName(f))
@@ -76,6 +76,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         {
             ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medico.IdEspecialidad);
 
+            /* Listamos las fotos disponibles */
             string path = Server.MapPath("~/Imagenes");
             var archivos = System.IO.Directory.GetFiles(path)
                 .Select(f => System.IO.Path.GetFileName(f))
@@ -85,6 +86,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             var identityDb = new ApplicationDbContext();
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(identityDb));
 
+            /* Configuramos un validador de contraseñas simple para la creación automática */
             userManager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 1,
@@ -94,28 +96,37 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                 RequireNonLetterOrDigit = false
             };
 
+            /* Listamos los usuarios disponibles */
             var todosUsuarios = userManager.Users.ToList();
+
+            /* Usuarios con rol Médico */
             var usuariosConRolMedico = todosUsuarios.Where(u => userManager.IsInRole(u.Id, "Medico")).ToList();
+
+            /* Filtramos los usuarios que ya tienen una ficha de médico */
             var usuariosConFicha = db.medicos.Select(m => m.IdUsuario).ToList();
+            
             var usuariosDisponibles = usuariosConRolMedico.Where(u => !usuariosConFicha.Contains(u.Id)).ToList();
             ViewBag.IdUsuario = new SelectList(usuariosDisponibles, "Id", "Email", medico.IdUsuario);
 
             if (!ModelState.IsValid)
                 return View(medico);
 
-            // 🔹 Crear usuario automáticamente si no se selecciona
+            /* Crear usuario automáticamente si no se seleccionó uno */
             if (string.IsNullOrEmpty(medico.IdUsuario))
             {
+                /* Se verifica si que el Médico tenga un nombre para poder generar el usuario */
                 if (string.IsNullOrWhiteSpace(medico.Nombre))
                 {
                     ModelState.AddModelError("", "Debe ingresar un nombre para generar el usuario automáticamente.");
                     return View(medico);
                 }
 
+                /* Dividir el nombre en partes para generar el usuario */
                 var partes = medico.Nombre.Trim().Split(' ');
                 string primerNombre = partes.Length > 0 ? partes[0] : medico.Nombre;
                 string apellido = partes.Length > 1 ? partes[partes.Length - 1] : "medico";
 
+                /* Se limpia la cadena para evitar caracteres especiales y convertimos a minúsculas */
                 string Sanitize(string s) =>
                     new string(s.Normalize(System.Text.NormalizationForm.FormD)
                         .Where(c => System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.NonSpacingMark)
@@ -123,15 +134,18 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     .Replace(" ", "")
                     .ToLowerInvariant();
 
+                /* Se genera el nombre combinando las primeras dos letras del primer nombre y el apellido */
                 string baseUsuario = (Sanitize(primerNombre).Length >= 2
                     ? Sanitize(primerNombre).Substring(0, 2)
                     : Sanitize(primerNombre)) + Sanitize(apellido);
 
+                /* Se construye el correo base y el nombre de usuario */
                 string email = baseUsuario + "@hotmail.com";
                 int contador = 1;
                 string emailFinal = email;
                 string usernameFinal = baseUsuario;
 
+                /* Se verifica que no exista el correo o el usuario, y se agrega un número si es necesario */
                 while (userManager.FindByEmail(emailFinal) != null || userManager.FindByName(usernameFinal) != null)
                 {
                     emailFinal = $"{baseUsuario}{contador}@hotmail.com";
@@ -139,7 +153,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     contador++;
                 }
 
-                // 🔐 Crear usuario nuevo
+                /* Se crea el nuevo usuario */
                 var nuevoUsuario = new ApplicationUser
                 {
                     UserName = usernameFinal,
@@ -147,7 +161,10 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     EmailConfirmed = true
                 };
 
+                /* Se asigna una contraseña por defecto simple */
                 string password = "123";
+
+                /* Se crea el usuario en la base de datos de Identity */
                 var result = userManager.Create(nuevoUsuario, password);
 
                 if (!result.Succeeded)
@@ -157,10 +174,11 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     return View(medico);
                 }
 
-                // Asignar rol "Medico"
+                /* Se asgina el rol de Médico, verificando que no tenga ya asignado a uno para no duplicar */
                 if (!userManager.IsInRole(nuevoUsuario.Id, "Medico"))
                     userManager.AddToRole(nuevoUsuario.Id, "Medico");
 
+                /* Se asigna el Id del nuevo usuario al médico */
                 medico.IdUsuario = nuevoUsuario.Id;
             }
 
@@ -183,6 +201,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
 
             ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medico.IdEspecialidad);
 
+            /* Listamos las fotos disponibles */
             string path = Server.MapPath("~/Imagenes");
             var archivos = System.IO.Directory.GetFiles(path)
                 .Select(f => System.IO.Path.GetFileName(f))
@@ -200,7 +219,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         public ActionResult Edit([Bind(Include = "IdMedico,IdUsuario,Nombre,IdEspecialidad,Foto")] medicos medico)
         {
             ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medico.IdEspecialidad);
-
+            /* Listamos las fotos disponibles */
             string path = Server.MapPath("~/Imagenes");
             var archivos = System.IO.Directory.GetFiles(path)
                 .Select(f => System.IO.Path.GetFileName(f))
@@ -239,11 +258,11 @@ namespace WebApplication02_Con_Autenticacion.Controllers
 
             string idUsuario = medico.IdUsuario;
 
-            // 1️⃣ Eliminar primero el médico (rompe la relación FK)
+            /* Se eliminan ambos registros en el orden correcto */
             db.medicos.Remove(medico);
             db.SaveChanges();
 
-            // 2️⃣ Luego eliminar el usuario asociado
+            /* Eliminar el usuario asociado de Identity */
             if (!string.IsNullOrEmpty(idUsuario))
             {
                 var identityDb = new ApplicationDbContext();
@@ -259,8 +278,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     userManager.Delete(usuario);
                 }
             }
-
-            TempData["Mensaje"] = "🗑️ Médico y usuario eliminados correctamente.";
+            
             return RedirectToAction("Index");
         }
 

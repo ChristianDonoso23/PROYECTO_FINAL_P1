@@ -29,21 +29,20 @@
             @Html.DropDownList("IdUsuario", null, "-- Seleccione un usuario --", new { @class = "form-control veris-register-input" })
         </div>
 
-        <div class="form-group mb-3">
-            <label>Foto Actual</label><br />
-            @if (!string.IsNullOrEmpty(Model.Foto))
-            {
-                <img src="~/Imagenes/@Model.Foto" width="100" class="veris-tabla-img" />
-            }
-            else
-            {
-                <span class="text-muted">Sin imagen</span>
-            }
-        </div>
+        <div class="form-group row mb-3 veris-crear-group">
+            @Html.LabelFor(model => model.Foto, new { @class = "control-label col-md-3 veris-crear-label" })
+            <div class="col-md-9 veris-crear-input-col">
+                @Html.DropDownListFor(model => model.Foto, (SelectList)ViewBag.Fotos,
+                    "-- Seleccione una imagen --", new { @class = "form-control veris-crear-input", id = "FotoSelect" })
 
-        <div class="form-group mb-3">
-            <label>Actualizar Foto</label>
-            <input type="file" name="imagenFile" class="form-control veris-register-input" />
+                <img id="previewFoto"
+                     src="~/Imagenes/@Model.Foto"
+                     alt="Vista previa"
+                     class="img-thumbnail mt-3 shadow-sm"
+                     style="max-width:150px; border-radius:10px; display:@(string.IsNullOrEmpty(Model.Foto) ? "none" : "block");" />
+
+                @Html.ValidationMessageFor(model => model.Foto, "", new { @class = "text-danger d-block veris-crear-error" })
+            </div>
         </div>
 
         <div class="veris-crear-button-group">

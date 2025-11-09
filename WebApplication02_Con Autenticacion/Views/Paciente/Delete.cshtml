@@ -12,7 +12,6 @@
         <hr class="veris-eliminar-divider" />
 
         <div class="row veris-eliminar-content">
-            <!-- Columna izquierda con los datos -->
             <div class="col-md-7">
                 <dl class="row veris-eliminar-list">
                     <dt class="col-sm-4 veris-eliminar-label">@Html.DisplayNameFor(model => model.Nombre)</dt>
@@ -38,7 +37,6 @@
                 </dl>
             </div>
 
-            <!-- Columna derecha con la foto -->
             <div class="col-md-5 text-center veris-eliminar-foto">
                 <div class="veris-eliminar-foto-wrapper">
                     @if (!string.IsNullOrEmpty(Model.Foto))
@@ -58,7 +56,6 @@
             </div>
         </div>
 
-        <!-- Botones de acción -->
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()

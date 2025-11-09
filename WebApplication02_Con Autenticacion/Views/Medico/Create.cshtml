@@ -16,7 +16,7 @@
         <hr class="veris-crear-divider" />
         @Html.ValidationSummary(true, "", new { @class = "text-danger veris-crear-validation" })
 
-        <!-- 🔹 Usuario Asociado -->
+        <!-- Usuario Asociado -->
         <div class="form-group row mb-3 veris-crear-group">
             @Html.LabelFor(model => model.IdUsuario, "Usuario asociado", new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
@@ -27,13 +27,13 @@
                     new { @class = "form-control veris-crear-input" }
                 )
                 <small class="form-text text-muted">
-                    Si no selecciona un usuario, podrá asignarlo más adelante.
+                    Si no selecciona un usuario, se generará uno automáticamente con correo <b>hotmail.com</b> y contraseña <b>123</b>.
                 </small>
                 @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
 
-        <!-- 🔹 Nombre -->
+        <!-- Nombre -->
         <div class="form-group row mb-3 veris-crear-group">
             @Html.LabelFor(model => model.Nombre, "Nombre Completo", new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <!-- 🔹 Especialidad -->
+        <!-- Especialidad -->
         <div class="form-group row mb-3 veris-crear-group">
             @Html.LabelFor(model => model.IdEspecialidad, "Especialidad", new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <!-- 🔹 Foto -->
+        <!-- Foto -->
         <div class="form-group row mb-3 veris-crear-group">
             @Html.LabelFor(model => model.Foto, new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <!-- 🔹 Botones -->
+        <!-- Botones -->
         <div class="form-group row mt-4 text-center veris-crear-button-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Registrar" class="btn veris-crear-btn btn-primary" />
