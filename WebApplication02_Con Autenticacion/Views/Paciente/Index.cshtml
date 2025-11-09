@@ -45,7 +45,7 @@
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Cedula)
+            @item.Cedula.ToString("D10")
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Edad)

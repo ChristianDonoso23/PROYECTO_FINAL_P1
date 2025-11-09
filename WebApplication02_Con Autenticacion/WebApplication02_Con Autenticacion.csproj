@@ -216,6 +216,7 @@
     <Compile Include="Models\pacientes.cs">
       <DependentUpon>ProyectoVerisADO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PacientesMetaData.cs" />
     <Compile Include="Models\ProyectoVerisADO.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -292,6 +293,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\validacionPaciente.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

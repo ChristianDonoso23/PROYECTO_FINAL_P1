@@ -27,15 +27,13 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            pacientes pacientes = db.pacientes.Find(id);
-            if (pacientes == null)
-            {
+
+            pacientes paciente = db.pacientes.Find(id);
+            if (paciente == null)
                 return HttpNotFound();
-            }
-            return View(pacientes);
+
+            return View(paciente);
         }
 
         // GET: Paciente/Create
@@ -47,22 +45,21 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         }
 
         // POST: Paciente/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "SuperAdmin, Administrador")]
-        public ActionResult Create([Bind(Include = "IdPaciente,IdUsuario,Nombre,Cedula,Edad,Genero,Estatura,Peso,Foto")] pacientes pacientes)
+        public ActionResult Create([Bind(Include = "IdPaciente,IdUsuario,Nombre,Cedula,Edad,Genero,Estatura,Peso,Foto")] pacientes paciente)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.pacientes.Add(pacientes);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", paciente.IdUsuario);
+                return View(paciente);
             }
 
-            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", pacientes.IdUsuario);
-            return View(pacientes);
+            db.pacientes.Add(paciente);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         // GET: Paciente/Edit/5
@@ -70,34 +67,31 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            pacientes pacientes = db.pacientes.Find(id);
-            if (pacientes == null)
-            {
+
+            pacientes paciente = db.pacientes.Find(id);
+            if (paciente == null)
                 return HttpNotFound();
-            }
-            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", pacientes.IdUsuario);
-            return View(pacientes);
+
+            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", paciente.IdUsuario);
+            return View(paciente);
         }
 
         // POST: Paciente/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "SuperAdmin, Administrador, Paciente")]
-        public ActionResult Edit([Bind(Include = "IdPaciente,IdUsuario,Nombre,Cedula,Edad,Genero,Estatura,Peso,Foto")] pacientes pacientes)
+        public ActionResult Edit([Bind(Include = "IdPaciente,IdUsuario,Nombre,Cedula,Edad,Genero,Estatura,Peso,Foto")] pacientes paciente)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.Entry(pacientes).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", paciente.IdUsuario);
+                return View(paciente);
             }
-            ViewBag.IdUsuario = new SelectList(db.AspNetUsers, "Id", "Email", pacientes.IdUsuario);
-            return View(pacientes);
+
+            db.Entry(paciente).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Paciente/Delete/5
@@ -105,15 +99,13 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            pacientes pacientes = db.pacientes.Find(id);
-            if (pacientes == null)
-            {
+
+            pacientes paciente = db.pacientes.Find(id);
+            if (paciente == null)
                 return HttpNotFound();
-            }
-            return View(pacientes);
+
+            return View(paciente);
         }
 
         // POST: Paciente/Delete/5
@@ -122,8 +114,8 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         [Authorize(Roles = "SuperAdmin, Administrador")]
         public ActionResult DeleteConfirmed(int id)
         {
-            pacientes pacientes = db.pacientes.Find(id);
-            db.pacientes.Remove(pacientes);
+            pacientes paciente = db.pacientes.Find(id);
+            db.pacientes.Remove(paciente);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -131,9 +123,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
             base.Dispose(disposing);
         }
     }
