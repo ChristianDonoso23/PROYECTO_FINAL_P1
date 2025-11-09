@@ -6,28 +6,12 @@ using System.Linq;
 namespace WebApplication02_Con_Autenticacion.Models
 {
     [MetadataType(typeof(pacientesMetadata))]
-    public partial class pacientes : IValidatableObject
+    public partial class pacientes
     {
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public bool CedulaValidaEcuatoriana(int cedulaInt)
         {
-            var errores = new List<ValidationResult>();
+            string cedula = cedulaInt.ToString().PadLeft(10, '0');
 
-            // Convertir la cédula a texto con ceros al inicio si tiene menos de 10 dígitos
-            string cedulaTexto = Cedula.ToString().PadLeft(10, '0');
-
-            if (!CedulaValidaEcuatoriana(cedulaTexto))
-            {
-                errores.Add(new ValidationResult(
-                    "⚠️ Cédula ecuatoriana inválida.",
-                    new[] { nameof(this.Cedula) }
-                ));
-            }
-
-            return errores;
-        }
-
-        private bool CedulaValidaEcuatoriana(string cedula)
-        {
             if (string.IsNullOrWhiteSpace(cedula) || cedula.Length != 10 || !cedula.All(char.IsDigit))
                 return false;
 
@@ -55,30 +39,30 @@ namespace WebApplication02_Con_Autenticacion.Models
 
     public class pacientesMetadata
     {
-        [Required(ErrorMessage = "⚠️ El campo Nombre es obligatorio.")]
-        [RegularExpression("^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$", ErrorMessage = "⚠️ El nombre solo puede contener letras.")]
+        [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
+        [RegularExpression("^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]+$", ErrorMessage = "El nombre solo puede contener letras.")]
         public string Nombre { get; set; }
 
-        [Required(ErrorMessage = "⚠️ La cédula es obligatoria.")]
-        [Range(1, 9999999999, ErrorMessage = "⚠️ La cédula debe tener hasta 10 dígitos.")]
+        [Required(ErrorMessage = "La cédula es obligatoria.")]
+        [Range(1, 9999999999, ErrorMessage = "La cédula debe tener hasta 10 dígitos.")]
         public int Cedula { get; set; }
 
-        [Required(ErrorMessage = "⚠️ La edad es obligatoria.")]
-        [Range(1, 120, ErrorMessage = "⚠️ La edad debe estar entre 1 y 120.")]
+        [Required(ErrorMessage = "La edad es obligatoria.")]
+        [Range(1, 120, ErrorMessage = "La edad debe estar entre 1 y 120.")]
         public int Edad { get; set; }
 
-        [Required(ErrorMessage = "⚠️ Debe seleccionar un género.")]
+        [Required(ErrorMessage = "Debe seleccionar un género.")]
         public string Genero { get; set; }
 
-        [Required(ErrorMessage = "⚠️ La estatura es obligatoria.")]
-        [Range(30, 250, ErrorMessage = "⚠️ La estatura debe estar entre 30 y 250 cm.")]
+        [Required(ErrorMessage = "La estatura es obligatoria.")]
+        [Range(30, 250, ErrorMessage = "La estatura debe estar entre 30 y 250 cm.")]
         public int Estatura { get; set; }
 
-        [Required(ErrorMessage = "⚠️ El peso es obligatorio.")]
-        [Range(1, 300, ErrorMessage = "⚠️ El peso debe estar entre 1 y 300 kg.")]
+        [Required(ErrorMessage = "El peso es obligatorio.")]
+        [Range(1, 300, ErrorMessage = "El peso debe estar entre 1 y 300 kg.")]
         public double Peso { get; set; }
 
-        [Required(ErrorMessage = "⚠️ Debe ingresar una URL o ruta de foto.")]
+        [Required(ErrorMessage = "Debe seleccionar una foto.")]
         public string Foto { get; set; }
     }
 }

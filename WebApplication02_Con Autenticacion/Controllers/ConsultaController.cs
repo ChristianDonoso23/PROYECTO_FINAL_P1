@@ -51,17 +51,27 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         [Authorize(Roles = "SuperAdmin, Medico")]
         public ActionResult Create([Bind(Include = "IdConsulta,IdMedico,IdPaciente,FechaConsulta,HI,HF,Diagnostico")] consultas consulta)
         {
-            if (ModelState.IsValid)
-            {
-                db.consultas.Add(consulta);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
             ViewBag.IdPaciente = new SelectList(db.pacientes, "IdPaciente", "Nombre", consulta.IdPaciente);
             ViewBag.IdMedico = new SelectList(db.medicos, "IdMedico", "Nombre", consulta.IdMedico);
-            return View(consulta);
+
+            if (!consulta.HorarioValido())
+            {
+                ModelState.AddModelError("HF", "La hora de fin debe ser mayor que la hora de inicio.");
+            }
+
+            if (!consulta.FechaValida())
+            {
+                ModelState.AddModelError("FechaConsulta", "La fecha de la consulta no puede ser futura.");
+            }
+
+            if (!ModelState.IsValid)
+                return View(consulta);
+
+            db.consultas.Add(consulta);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
+
 
         // GET: Consulta/Edit/5
         [Authorize(Roles = "SuperAdmin, Medico")]

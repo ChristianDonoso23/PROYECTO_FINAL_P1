@@ -5,68 +5,38 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<main class="container my-5 veris-eliminar-container">
-    <div class="veris-eliminar-card shadow-lg p-4 rounded">
-        <h2 class="veris-eliminar-title mb-4 text-center">Eliminar Médico</h2>
+<div class="container mt-5 veris-eliminar-container">
+    <div class="card veris-eliminar-card p-4 shadow-sm border-0">
+        <h2 class="text-center veris-eliminar-title mb-3">Eliminar Médico</h2>
         <hr class="veris-eliminar-divider" />
 
-        <h4 class="text-center mb-4 text-danger">¿Está seguro de que desea eliminar este registro?</h4>
+        <p class="text-center text-muted mb-4">¿Está seguro de que desea eliminar este médico?</p>
 
-        <div class="row veris-eliminar-content">
-            <!-- 📋 Columna izquierda -->
-            <div class="col-md-7">
-                <dl class="row veris-eliminar-list">
-                    <dt class="col-sm-4 veris-eliminar-label">
-                        @Html.DisplayNameFor(model => model.Nombre)
-                    </dt>
-                    <dd class="col-sm-8 veris-eliminar-value">
-                        @Html.DisplayFor(model => model.Nombre)
-                    </dd>
-
-                    <dt class="col-sm-4 veris-eliminar-label">
-                        @Html.DisplayNameFor(model => model.AspNetUsers.Email)
-                    </dt>
-                    <dd class="col-sm-8 veris-eliminar-value">
-                        @Html.DisplayFor(model => model.AspNetUsers.Email)
-                    </dd>
-
-                    <dt class="col-sm-4 veris-eliminar-label">
-                        @Html.DisplayNameFor(model => model.especialidades.Descripcion)
-                    </dt>
-                    <dd class="col-sm-8 veris-eliminar-value">
-                        @Html.DisplayFor(model => model.especialidades.Descripcion)
-                    </dd>
-                </dl>
+        <div class="row">
+            <div class="col-md-8">
+                <p><strong>Nombre:</strong> @Html.DisplayFor(m => m.Nombre)</p>
+                <p><strong>Especialidad:</strong> @(Model.especialidades != null ? Model.especialidades.Descripcion : "Sin especialidad")</p>
+                <p><strong>Usuario:</strong> @(Model.AspNetUsers != null ? Model.AspNetUsers.Email : "Sin usuario")</p>
             </div>
-
-            <!-- 🖼️ Columna derecha: Foto -->
-            <div class="col-md-5 text-center veris-eliminar-foto">
-                <div class="veris-eliminar-foto-wrapper">
-                    @if (!string.IsNullOrEmpty(Model.Foto))
-                    {
-                        <img src="~/Imagenes/@Model.Foto"
-                             alt="Foto de @Model.Nombre"
-                             class="veris-eliminar-img img-fluid" />
-                    }
-                    else
-                    {
-                        <div class="veris-eliminar-foto-placeholder">
-                            <i class="bi bi-person-circle fs-1 text-muted"></i>
-                            <p class="text-muted mt-2">Sin foto disponible</p>
-                        </div>
-                    }
-                </div>
+            <div class="col-md-4 text-center veris-eliminar-foto-wrapper">
+                @if (!string.IsNullOrEmpty(Model.Foto))
+                {
+                    <img src="~/Imagenes/@Model.Foto" class="veris-eliminar-img" />
+                }
+                else
+                {
+                    <div class="text-muted">Sin imagen</div>
+                }
             </div>
         </div>
 
-        <!-- 🔹 Botones -->
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div class="veris-eliminar-buttons text-center mt-4">
-                <input type="submit" value="Eliminar" class="btn veris-eliminar-btn mx-2" />
-                @Html.ActionLink("Volver a la lista", "Index", null, new { @class = "btn btn-outline-secondary veris-eliminar-back mx-2" })
+            <div class="text-center mt-4">
+                <input type="submit" value="Eliminar" class="btn veris-eliminar-btn" />
+                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary veris-eliminar-back" })
             </div>
         }
     </div>
-</main>
+</div>

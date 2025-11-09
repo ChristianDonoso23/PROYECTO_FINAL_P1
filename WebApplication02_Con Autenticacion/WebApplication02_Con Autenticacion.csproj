@@ -196,6 +196,7 @@
     <Compile Include="Models\AspNetUsers.cs">
       <DependentUpon>ProyectoVerisADO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConsultaMetaData.cs" />
     <Compile Include="Models\consultas.cs">
       <DependentUpon>ProyectoVerisADO.tt</DependentUpon>
     </Compile>
@@ -213,6 +214,7 @@
     <Compile Include="Models\medicos.cs">
       <DependentUpon>ProyectoVerisADO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MedicosMetaData.cs" />
     <Compile Include="Models\pacientes.cs">
       <DependentUpon>ProyectoVerisADO.tt</DependentUpon>
     </Compile>

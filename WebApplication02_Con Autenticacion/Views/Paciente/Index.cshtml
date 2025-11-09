@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<WebApplication02_Con_Autenticacion.Models.pacientes>
 
 @{
-    ViewBag.Title = "Pacientes";
+    ViewBag.Title = "Listado de Pacientes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
 
     @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdmin"))
     {
-        <p> @Html.ActionLink("Crear Nuevo", "Create", null, new { @class = "btn btn-primary mb-3" }) </p>
+        <p> @Html.ActionLink("Registrar nuevo paciente", "Create", null, new { @class = "btn btn-success mb-3" }) </p>
     }
 
     <div class="veris-tabla-wrapper">

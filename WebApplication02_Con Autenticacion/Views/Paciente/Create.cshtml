@@ -8,7 +8,7 @@
 <div class="container my-4 veris-crear-container">
     <h2 class="veris-crear-title">Registrar Paciente</h2>
 
-    @using (Html.BeginForm( new { enctype = "multipart/form-data", @class = "form-horizontal veris-crear-form" }))
+    @using (Html.BeginForm("Create", "Paciente", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal veris-crear-form" }))
     {
         @Html.AntiForgeryToken()
 
@@ -16,7 +16,7 @@
         <hr class="veris-crear-divider" />
         @Html.ValidationSummary(true, "", new { @class = "text-danger veris-crear-validation" })
 
-        <!-- 🔹 Campo de selección de usuario existente o creación automática -->
+        <!-- 🔹 Usuario asociado -->
         <div class="form-group row mb-3 veris-crear-group">
             @Html.LabelFor(model => model.IdUsuario, "Usuario asociado", new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
@@ -27,7 +27,7 @@
                     new { @class = "form-control veris-crear-input" }
                 )
                 <small class="form-text text-muted">
-                    Si no selecciona un usuario, se generará uno nuevo automáticamente con correo <b>hotmail.com</b> y contraseña <b>123</b>.
+                    Si no selecciona un usuario, se generará uno automáticamente con correo <b>hotmail.com</b> y contraseña <b>123</b>.
                 </small>
                 @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
@@ -47,6 +47,7 @@
             @Html.LabelFor(model => model.Cedula, new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
                 @Html.TextBoxFor(model => model.Cedula, new { @class = "form-control veris-crear-input", maxlength = "10", placeholder = "Ejemplo: 0102030405" })
+                <small class="form-text text-muted">Debe tener 10 dígitos numéricos válidos según el formato ecuatoriano.</small>
                 @Html.ValidationMessageFor(model => model.Cedula, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
@@ -64,15 +65,17 @@
         <div class="form-group row mb-3 veris-crear-group">
             @Html.LabelFor(model => model.Genero, new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
-                <select id="Genero" name="Genero" class="form-control veris-crear-input">
-                    <option value="">Seleccione...</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femenino">Femenino</option>
-                    <option value="Otro">Otro</option>
-                </select>
+                @Html.DropDownListFor(model => model.Genero, new SelectList(new[]
+                {
+                    new { Value = "", Text = "Seleccione..." },
+                    new { Value = "M", Text = "Masculino" },
+                    new { Value = "F", Text = "Femenino" },
+                    new { Value = "O", Text = "Otro" }
+                }, "Value", "Text"), new { @class = "form-control veris-crear-input" })
                 @Html.ValidationMessageFor(model => model.Genero, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
+
 
         <!-- 🔹 Estatura -->
         <div class="form-group row mb-3 veris-crear-group">

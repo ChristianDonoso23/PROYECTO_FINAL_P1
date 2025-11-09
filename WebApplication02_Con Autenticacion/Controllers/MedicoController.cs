@@ -43,15 +43,14 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             var identityDb = new ApplicationDbContext();
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(identityDb));
 
-            // 🔹 Cargar todos los usuarios a memoria
             var todosUsuarios = userManager.Users.ToList();
 
-            // 🔹 Filtrar usuarios con rol "Medico"
+            // 🔹 Usuarios con rol "Medico"
             var usuariosConRolMedico = todosUsuarios
                 .Where(u => userManager.IsInRole(u.Id, "Medico"))
                 .ToList();
 
-            // 🔹 Excluir usuarios con ficha ya creada
+            // 🔹 Excluir los que ya tienen ficha
             var usuariosConFicha = db.medicos.Select(m => m.IdUsuario).ToList();
             var usuariosDisponibles = usuariosConRolMedico
                 .Where(u => !usuariosConFicha.Contains(u.Id))
@@ -60,7 +59,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             ViewBag.IdUsuario = new SelectList(usuariosDisponibles, "Id", "Email");
             ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion");
 
-            // 📸 Cargar imágenes disponibles
+            // 🔹 Cargar imágenes desde la carpeta Imagenes
             string path = Server.MapPath("~/Imagenes");
             var archivos = System.IO.Directory.GetFiles(path)
                 .Select(f => System.IO.Path.GetFileName(f))
@@ -75,7 +74,6 @@ namespace WebApplication02_Con_Autenticacion.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdMedico,IdUsuario,Nombre,IdEspecialidad,Foto")] medicos medico)
         {
-            // 🔁 Recargar combos en caso de error
             ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medico.IdEspecialidad);
 
             string path = Server.MapPath("~/Imagenes");
@@ -84,20 +82,18 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                 .ToList();
             ViewBag.Fotos = new SelectList(archivos, medico.Foto);
 
-            // Configurar Identity
             var identityDb = new ApplicationDbContext();
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(identityDb));
 
             userManager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 1,
-                RequireNonLetterOrDigit = false,
                 RequireDigit = false,
                 RequireLowercase = false,
-                RequireUppercase = false
+                RequireUppercase = false,
+                RequireNonLetterOrDigit = false
             };
 
-            // Usuarios disponibles (para mantener el combo)
             var todosUsuarios = userManager.Users.ToList();
             var usuariosConRolMedico = todosUsuarios.Where(u => userManager.IsInRole(u.Id, "Medico")).ToList();
             var usuariosConFicha = db.medicos.Select(m => m.IdUsuario).ToList();
@@ -107,7 +103,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             if (!ModelState.IsValid)
                 return View(medico);
 
-            // 🧩 Si no se seleccionó usuario, crear uno automáticamente
+            // 🔹 Crear usuario automáticamente si no se selecciona
             if (string.IsNullOrEmpty(medico.IdUsuario))
             {
                 if (string.IsNullOrWhiteSpace(medico.Nombre))
@@ -116,7 +112,6 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     return View(medico);
                 }
 
-                // Generar correo y username
                 var partes = medico.Nombre.Trim().Split(' ');
                 string primerNombre = partes.Length > 0 ? partes[0] : medico.Nombre;
                 string apellido = partes.Length > 1 ? partes[partes.Length - 1] : "medico";
@@ -128,12 +123,15 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     .Replace(" ", "")
                     .ToLowerInvariant();
 
-                string baseUsuario = (Sanitize(primerNombre).Length >= 2 ? Sanitize(primerNombre).Substring(0, 2) : Sanitize(primerNombre)) + Sanitize(apellido);
-                string email = baseUsuario + "@hotmail.com";
+                string baseUsuario = (Sanitize(primerNombre).Length >= 2
+                    ? Sanitize(primerNombre).Substring(0, 2)
+                    : Sanitize(primerNombre)) + Sanitize(apellido);
 
+                string email = baseUsuario + "@hotmail.com";
                 int contador = 1;
                 string emailFinal = email;
                 string usernameFinal = baseUsuario;
+
                 while (userManager.FindByEmail(emailFinal) != null || userManager.FindByName(usernameFinal) != null)
                 {
                     emailFinal = $"{baseUsuario}{contador}@hotmail.com";
@@ -141,7 +139,7 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     contador++;
                 }
 
-                // Crear usuario nuevo
+                // 🔐 Crear usuario nuevo
                 var nuevoUsuario = new ApplicationUser
                 {
                     UserName = usernameFinal,
@@ -164,13 +162,12 @@ namespace WebApplication02_Con_Autenticacion.Controllers
                     userManager.AddToRole(nuevoUsuario.Id, "Medico");
 
                 medico.IdUsuario = nuevoUsuario.Id;
-
-                TempData["Mensaje"] = $"✅ Médico creado correctamente.\nUsuario: {emailFinal}\nContraseña: 123";
             }
 
             db.medicos.Add(medico);
             db.SaveChanges();
 
+            TempData["Mensaje"] = "✅ Médico registrado correctamente.";
             return RedirectToAction("Index");
         }
 
@@ -186,14 +183,12 @@ namespace WebApplication02_Con_Autenticacion.Controllers
 
             ViewBag.IdEspecialidad = new SelectList(db.especialidades, "IdEspecialidad", "Descripcion", medico.IdEspecialidad);
 
-            // Fotos
             string path = Server.MapPath("~/Imagenes");
             var archivos = System.IO.Directory.GetFiles(path)
                 .Select(f => System.IO.Path.GetFileName(f))
                 .ToList();
             ViewBag.Fotos = new SelectList(archivos, medico.Foto);
 
-            // Evitar cambiar usuario vinculado
             ViewBag.IdUsuario = new SelectList(db.AspNetUsers.Where(u => u.Id == medico.IdUsuario), "Id", "Email", medico.IdUsuario);
 
             return View(medico);
@@ -233,14 +228,39 @@ namespace WebApplication02_Con_Autenticacion.Controllers
             return View(medico);
         }
 
-        // POST: Medico/Delete/5
+        // ✅ POST: Medico/Delete/5 (con eliminación segura del usuario asociado)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             var medico = db.medicos.Find(id);
+            if (medico == null)
+                return HttpNotFound();
+
+            string idUsuario = medico.IdUsuario;
+
+            // 1️⃣ Eliminar primero el médico (rompe la relación FK)
             db.medicos.Remove(medico);
             db.SaveChanges();
+
+            // 2️⃣ Luego eliminar el usuario asociado
+            if (!string.IsNullOrEmpty(idUsuario))
+            {
+                var identityDb = new ApplicationDbContext();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(identityDb));
+
+                var usuario = userManager.FindById(idUsuario);
+                if (usuario != null)
+                {
+                    var roles = userManager.GetRoles(usuario.Id);
+                    foreach (var rol in roles)
+                        userManager.RemoveFromRole(usuario.Id, rol);
+
+                    userManager.Delete(usuario);
+                }
+            }
+
+            TempData["Mensaje"] = "🗑️ Médico y usuario eliminados correctamente.";
             return RedirectToAction("Index");
         }
 

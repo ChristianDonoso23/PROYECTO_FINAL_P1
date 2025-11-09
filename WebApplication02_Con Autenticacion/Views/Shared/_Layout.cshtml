@@ -41,32 +41,33 @@
                     {
                         if (User.IsInRole("SuperAdmin"))
                         {
-                            <li class="nav-item">@Html.ActionLink("Pacientes", "Index", "Paciente", null, new { @class = "nav-link bi bi-people-fill" })</li>
-                            <li class="nav-item">@Html.ActionLink("Médicos", "Index", "Medico", null, new { @class = "nav-link bi bi-person-badge-fill" })</li>
-                            <li class="nav-item">@Html.ActionLink("Especialidades", "Index", "Especialidad", null, new { @class = "nav-link bi bi-heart-pulse" })</li>
-                            <li class="nav-item">@Html.ActionLink("Medicamentos", "Index", "Medicamento", null, new { @class = "nav-link bi bi-capsule" })</li>
-                            <li class="nav-item">@Html.ActionLink("Consultas", "Index", "Consulta", null, new { @class = "nav-link bi bi-clipboard2-pulse" })</li>
-                            <li class="nav-item">@Html.ActionLink("Recetas", "Index", "Receta", null, new { @class = "nav-link bi bi-receipt" })</li>
-                            <li class="nav-item">@Html.ActionLink("Gestión de Roles", "Index", "Rol", null, new { @class = "nav-link bi bi-shield-lock-fill" })</li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Paciente")"><i class="bi bi-people-fill me-1"></i>Pacientes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Medico")"><i class="bi bi-person-badge-fill me-1"></i>Médicos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Especialidad")"><i class="bi bi-heart-pulse me-1"></i>Especialidades</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Medicamento")"><i class="bi bi-capsule me-1"></i>Medicamentos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Consulta")"><i class="bi bi-clipboard2-pulse me-1"></i>Consultas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Receta")"><i class="bi bi-receipt me-1"></i>Recetas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Rol")"><i class="bi bi-shield-lock-fill me-1"></i>Gestión de Roles</a></li>
                         }
                         else if (User.IsInRole("Administrador"))
                         {
-                            <li class="nav-item">@Html.ActionLink("Pacientes", "Index", "Paciente", null, new { @class = "nav-link bi bi-people-fill" })</li>
-                            <li class="nav-item">@Html.ActionLink("Médicos", "Index", "Medico", null, new { @class = "nav-link bi bi-person-badge-fill" })</li>
-                            <li class="nav-item">@Html.ActionLink("Especialidades", "Index", "Especialidad", null, new { @class = "nav-link bi bi-heart-pulse" })</li>
-                            <li class="nav-item">@Html.ActionLink("Medicamentos", "Index", "Medicamento", null, new { @class = "nav-link bi bi-capsule" })</li>
-                            <li class="nav-item">@Html.ActionLink("Gestión de Roles", "Index", "Rol", null, new { @class = "nav-link bi bi-shield-lock-fill" })</li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Paciente")"><i class="bi bi-people-fill me-1"></i>Pacientes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Medico")"><i class="bi bi-person-badge-fill me-1"></i>Médicos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Especialidad")"><i class="bi bi-heart-pulse me-1"></i>Especialidades</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Medicamento")"><i class="bi bi-capsule me-1"></i>Medicamentos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Rol")"><i class="bi bi-shield-lock-fill me-1"></i>Gestión de Roles</a></li>
                         }
                         else if (User.IsInRole("Medico"))
                         {
-                            <li class="nav-item">@Html.ActionLink("Consultas", "Index", "Consulta", null, new { @class = "nav-link bi bi-clipboard2-pulse" })</li>
-                            <li class="nav-item">@Html.ActionLink("Recetas", "Index", "Receta", null, new { @class = "nav-link bi bi-receipt" })</li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Consulta")"><i class="bi bi-clipboard2-pulse me-1"></i>Consultas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Receta")"><i class="bi bi-receipt me-1"></i>Recetas</a></li>
                         }
                         else if (User.IsInRole("Paciente"))
                         {
-                            <li class="nav-item">@Html.ActionLink("Mis Datos", "Index", "Paciente", null, new { @class = "nav-link bi bi-person-circle" })</li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Index", "Paciente")"><i class="bi bi-person-circle me-1"></i>Mis Datos</a></li>
                         }
                     }
+
                 </ul>
 
                 <!-- Sección de Login / Logout -->

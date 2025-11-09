@@ -8,7 +8,7 @@
 <div class="container my-4 veris-crear-container">
     <h2 class="veris-crear-title">Registrar Médico</h2>
 
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal veris-crear-form" }))
+    @using (Html.BeginForm("Create", "Medico", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal veris-crear-form" }))
     {
         @Html.AntiForgeryToken()
 
@@ -16,18 +16,18 @@
         <hr class="veris-crear-divider" />
         @Html.ValidationSummary(true, "", new { @class = "text-danger veris-crear-validation" })
 
-        <!-- 🔹 Usuario asociado -->
+        <!-- 🔹 Usuario Asociado -->
         <div class="form-group row mb-3 veris-crear-group">
             @Html.LabelFor(model => model.IdUsuario, "Usuario asociado", new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
                 @Html.DropDownList(
                     "IdUsuario",
                     (SelectList)ViewBag.IdUsuario,
-                    "-- Crear nuevo usuario automáticamente --",
+                    "-- Seleccione un usuario --",
                     new { @class = "form-control veris-crear-input" }
                 )
                 <small class="form-text text-muted">
-                    Si no selecciona un usuario, se generará uno nuevo automáticamente con correo <b>hotmail.com</b> y contraseña <b>123</b>.
+                    Si no selecciona un usuario, podrá asignarlo más adelante.
                 </small>
                 @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
@@ -35,9 +35,9 @@
 
         <!-- 🔹 Nombre -->
         <div class="form-group row mb-3 veris-crear-group">
-            @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-3 veris-crear-label" })
+            @Html.LabelFor(model => model.Nombre, "Nombre Completo", new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
-                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control veris-crear-input", placeholder = "Ejemplo: Juan Pérez" })
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control veris-crear-input", placeholder = "Ejemplo: Damaris Donoso" })
                 @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>
@@ -46,7 +46,12 @@
         <div class="form-group row mb-3 veris-crear-group">
             @Html.LabelFor(model => model.IdEspecialidad, "Especialidad", new { @class = "control-label col-md-3 veris-crear-label" })
             <div class="col-md-9 veris-crear-input-col">
-                @Html.DropDownList("IdEspecialidad", (SelectList)ViewBag.IdEspecialidad, "-- Seleccione una especialidad --", new { @class = "form-control veris-crear-input" })
+                @Html.DropDownList(
+                    "IdEspecialidad",
+                    (SelectList)ViewBag.IdEspecialidad,
+                    "-- Seleccione una especialidad --",
+                    new { @class = "form-control veris-crear-input" }
+                )
                 @Html.ValidationMessageFor(model => model.IdEspecialidad, "", new { @class = "text-danger d-block veris-crear-error" })
             </div>
         </div>

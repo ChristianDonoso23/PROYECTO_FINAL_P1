@@ -394,7 +394,6 @@ footer {
 
 
 /* FORMULARIO */
-/* Ajusta el espaciado inferior del formulario para no chocar con el footer */
 .veris-register-container {
     flex: 1;
     max-width: 700px;
@@ -402,10 +401,8 @@ footer {
     border-radius: 20px;
     padding: 2.5rem 3rem;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    margin-bottom: 80px; /* 🔹 Agrega espacio respecto al footer */
+    margin-bottom: 80px;
 }
-
-/* Si quieres un poco más de aire, usa 6rem o 7rem */
 
 
 .veris-register-title {
@@ -496,8 +493,8 @@ footer {
 /* ====== CONTENEDOR GENERAL ====== */
 .veris-crear-container {
     width: 100%;
-    max-width: 500px; /* 🔹 Reduce el ancho total */
-    margin: 4rem auto; /* 🔹 Centra el formulario vertical y horizontalmente */
+    max-width: 500px;
+    margin: 4rem auto;
     background: #ffffff;
     border-radius: 20px;
     padding: 2.5rem;
